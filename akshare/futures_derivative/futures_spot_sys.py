@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/5 20:20
 Desc: 生意社-商品与期货-现期图
@@ -21,7 +22,7 @@ def __get_sys_spot_futures_dict() -> dict:
     :rtype: dict
     """
     url = "https://www.100ppi.com/sf/792.html"
-    res = requests.get(url)
+    res = ak_get(url)
     soup = BeautifulSoup(res.text, features="lxml")
     temp_item = soup.find(name="div", attrs={"class": "q8"}).find_all("li")
     name_url_dict = dict(
@@ -46,7 +47,7 @@ def futures_spot_sys(symbol: str = "铜", indicator: str = "市场价格") -> pd
     """
     name_url_dict = __get_sys_spot_futures_dict()
     url = name_url_dict[symbol]
-    r = requests.get("https://www.100ppi.com" + url)
+    r = ak_get("https://www.100ppi.com" + url)
     if indicator == "市场价格":
         table_df_one = pd.read_html(StringIO(r.text), header=0, index_col=0)[1].T
         table_df_one["现货价格"] = pd.to_numeric(

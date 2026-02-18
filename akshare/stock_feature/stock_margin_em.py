@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/6/14 17:00
 Desc: 东方财富网-数据中心-融资融券-融资融券账户统计-两融账户信息
@@ -34,7 +35,7 @@ def stock_margin_account_info() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url=url, params=params)
+    r = ak_get(url=url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     tqdm = get_tqdm()
@@ -48,7 +49,7 @@ def stock_margin_account_info() -> pd.DataFrame:
                 "pageNum": page,
             }
         )
-        r = requests.get(url=url, params=params)
+        r = ak_get(url=url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)

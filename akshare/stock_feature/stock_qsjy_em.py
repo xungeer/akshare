@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/9/21 16:49
 Desc: 东方财富网-数据中心-特色数据-券商业绩月报
@@ -31,7 +32,7 @@ def stock_qsjy_em(date: str = "20200731") -> pd.DataFrame:
         "client": "WEB",
         "filter": f"(END_DATE='{'-'.join([date[:4], date[4:6], date[6:]])}')",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [

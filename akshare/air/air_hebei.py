@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/25 17:20
 Desc: 河北省空气质量预报信息发布系统
@@ -28,7 +29,7 @@ def air_quality_hebei() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "http://218.11.10.130:8080/api/hour/130000.xml"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.content, features="xml")
     data = []
     cities = soup.find_all("City")

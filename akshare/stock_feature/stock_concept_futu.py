@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/16 22:00
 Desc: 富途牛牛-主题投资-概念板块-成分股
@@ -33,7 +34,7 @@ def _stock_concept_cons_futu(symbol: str = "巴菲特持仓") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     soup = BeautifulSoup(r.text, features="lxml")
     temp_code_name = [
         item.find_all("div", attrs={"class": "fix-left"})
@@ -122,7 +123,7 @@ def stock_concept_cons_futu(symbol: str = "特朗普概念股") -> pd.DataFrame:
             "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
             "Quote-Token": "7f74cd2a5e",
         }
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         total_page = data_json["data"]["pagination"]["pageCount"]
         big_df = pd.DataFrame()
@@ -134,7 +135,7 @@ def stock_concept_cons_futu(symbol: str = "特朗普概念股") -> pd.DataFrame:
             )
             if page == 1:
                 headers.update({"Quote-Token": "a3043d6fed"})
-            r = requests.get(url, params=params, headers=headers)
+            r = ak_get(url, params=params, headers=headers)
             data_json = r.json()
             temp_df = pd.DataFrame(data_json["data"]["list"])
             big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)

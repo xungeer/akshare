@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/2/5 18:00
@@ -26,7 +27,7 @@ def stock_hsgt_fund_min_em(symbol: str = "北向资金") -> pd.DataFrame:
         "ut": "b2884a393a59ad64002292a3e90d46a5",
         "_": "1707125786160",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
 
     if symbol == "南向资金":

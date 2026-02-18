@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/6/13 22:05
 Desc: 柯桥时尚指数
@@ -40,7 +41,7 @@ def index_kq_fashion(symbol: str = "时尚创意指数") -> pd.DataFrame:
         "时尚评价指数": "04",
     }
     params = {"structCode": symbol_map[symbol]}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.rename(

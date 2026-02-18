@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/1/7 13:40
 Desc: 新浪财经-机构推荐池
@@ -25,7 +26,7 @@ def stock_institute_recommend(symbol: str = "投资评级选股") -> pd.DataFram
         "num": "40",
         "p": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     soup = BeautifulSoup(r.text, "lxml")
     indicator_map = {
         item.find("a").text: item.find("a")["href"]
@@ -36,7 +37,7 @@ def stock_institute_recommend(symbol: str = "投资评级选股") -> pd.DataFram
         "num": "10000",
         "p": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     if symbol == "股票综合评级":
         temp_df = pd.read_html(r.text, header=0)[0].iloc[:, :9]
         temp_df["股票代码"] = temp_df["股票代码"].astype(str).str.zfill(6)
@@ -87,7 +88,7 @@ def stock_institute_recommend_detail(symbol: str = "000001") -> pd.DataFrame:
         "num": "5000",
         "p": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     temp_df = pd.read_html(r.text, header=0)[0].iloc[:, :8]
     temp_df["股票代码"] = temp_df["股票代码"].astype(str).str.zfill(6)
     temp_df = temp_df.rename(columns={"评级日期↓": "评级日期"})

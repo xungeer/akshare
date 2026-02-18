@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/2/19 22:00
@@ -29,7 +30,7 @@ def stock_sgt_settlement_exchange_rate_szse() -> pd.DataFrame:
         "TABKEY": "tab2",
         "random": "0.9184251620553985",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     with warnings.catch_warnings(record=True):
         warnings.simplefilter("always")
         temp_df = pd.read_excel(r.content, engine="openpyxl")
@@ -58,7 +59,7 @@ def stock_sgt_reference_exchange_rate_szse() -> pd.DataFrame:
         "TABKEY": "tab1",
         "random": "0.9184251620553985",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     with warnings.catch_warnings(record=True):
         warnings.simplefilter("always")
         temp_df = pd.read_excel(r.content, engine="openpyxl")
@@ -99,7 +100,7 @@ def stock_sgt_reference_exchange_rate_sse() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/105.0.0.0 Safari/537.36",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"])
     temp_df.rename(
@@ -157,7 +158,7 @@ def stock_sgt_settlement_exchange_rate_sse() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/105.0.0.0 Safari/537.36",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"])
     temp_df.rename(

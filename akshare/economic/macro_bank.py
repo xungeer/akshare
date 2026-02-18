@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/11/5 17:11
 Desc: 金十数据中心-经济指标-央行利率-主要央行利率
@@ -57,7 +58,7 @@ def __get_interest_rate_data(attr_id: str, name: str = "利率") -> pd.DataFrame
     interest_rate_data = []
     try:
         while True:
-            response = requests.get(
+            response = ak_get(
                 url=base_url, params=params, headers=headers, timeout=10
             )
             data = response.json()

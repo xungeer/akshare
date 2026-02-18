@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/6/26 15:33
 Desc: 英为财情-外汇-货币对历史数据
@@ -48,7 +49,7 @@ def currency_pair_map(symbol: str = "美元") -> pd.DataFrame:
         url = "https://cn.investing.com/currencies/Service/region"
         params = {"region_ID": region_id, "currency_ID": "false"}
 
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         soup = BeautifulSoup(r.text, features="lxml")
         region_code.extend(
             [
@@ -66,7 +67,7 @@ def currency_pair_map(symbol: str = "美元") -> pd.DataFrame:
         "region_ID": name_id_map[symbol].split("-")[1],
         "currency_ID": name_id_map[symbol].split("-")[0],
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     soup = BeautifulSoup(r.text, features="lxml")
 
     temp_code = [item["href"].split("/")[-1] for item in soup.find_all("a")]  # need

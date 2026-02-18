@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/5/29 23:00
 Desc: 百度股市通-A股-财务报表-估值数据
@@ -42,7 +43,7 @@ def stock_zh_valuation_baidu(
         "skip_industry": "1",
         "finClientType": "pc",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(
         data_json["Result"][0]["DisplayData"]["resultData"]["tplData"]["result"][

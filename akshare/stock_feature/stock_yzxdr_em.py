@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/4/27 19:18
 Desc: 东方财富网-数据中心-特色数据-一致行动人
@@ -39,7 +40,7 @@ def stock_yzxdr_em(date: str = "20240930") -> pd.DataFrame:
         "filter": f"(enddate='{date}')",
         "rt": "53575609",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     total_pages = data_json["result"]["pages"]
@@ -52,7 +53,7 @@ def stock_yzxdr_em(date: str = "20240930") -> pd.DataFrame:
                 "filter": f"(enddate='{date}')",
             }
         )
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -1])
         temp_df = pd.DataFrame(data_json["result"]["data"])

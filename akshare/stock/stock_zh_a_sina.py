@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2026/1/9 22:00
 Desc: 新浪财经-A股-实时行情数据和历史行情数据(包含前复权和后复权因子)
@@ -34,7 +35,7 @@ def _get_zh_a_page_count() -> int:
     :return: 需要采集的股票总页数
     :rtype: int
     """
-    res = requests.get(zh_sina_a_stock_count_url)
+    res = ak_get(zh_sina_a_stock_count_url)
     page_count = int(re.findall(re.compile(r"\d+"), res.text)[0]) / 80
     if isinstance(page_count, int):
         return page_count
@@ -57,7 +58,7 @@ def stock_zh_a_spot() -> pd.DataFrame:
         range(1, page_count + 1), leave=False, desc="Please wait for a moment"
     ):
         zh_sina_stock_payload_copy.update({"page": page})
-        r = requests.get(zh_sina_a_stock_url, params=zh_sina_stock_payload_copy)
+        r = ak_get(zh_sina_a_stock_url, params=zh_sina_stock_payload_copy)
         data_json = demjson.decode(r.text)
         big_df = pd.concat(objs=[big_df, pd.DataFrame(data_json)], ignore_index=True)
 
@@ -147,7 +148,7 @@ def stock_zh_a_daily(
 
     def _fq_factor(method: str) -> pd.DataFrame:
         if method == "hfq":
-            r = requests.get(zh_sina_a_stock_hfq_url.format(symbol))
+            r = ak_get(zh_sina_a_stock_hfq_url.format(symbol))
             hfq_factor_df = pd.DataFrame(
                 eval(r.text.split("=")[1].split("\n")[0])["data"]
             )
@@ -159,7 +160,7 @@ def stock_zh_a_daily(
             hfq_factor_df.reset_index(inplace=True)
             return hfq_factor_df
         else:
-            r = requests.get(zh_sina_a_stock_qfq_url.format(symbol))
+            r = ak_get(zh_sina_a_stock_qfq_url.format(symbol))
             qfq_factor_df = pd.DataFrame(
                 eval(r.text.split("=")[1].split("\n")[0])["data"]
             )
@@ -174,7 +175,7 @@ def stock_zh_a_daily(
     if adjust in ("hfq-factor", "qfq-factor"):
         return _fq_factor(adjust.split("-")[0])
 
-    r = requests.get(zh_sina_a_stock_hist_url.format(symbol))
+    r = ak_get(zh_sina_a_stock_hist_url.format(symbol))
     js_code = py_mini_racer.MiniRacer()
     js_code.eval(hk_js_decode)
     dict_list = js_code.call(
@@ -193,7 +194,7 @@ def stock_zh_a_daily(
     except:  # noqa: E722
         pass
     data_df = data_df.astype("float")
-    r = requests.get(zh_sina_a_stock_amount_url.format(symbol, symbol))
+    r = ak_get(zh_sina_a_stock_amount_url.format(symbol, symbol))
     amount_data_json = demjson.decode(r.text[r.text.find("[") : r.text.rfind("]") + 1])
     amount_data_df = pd.DataFrame(amount_data_json)
     amount_data_df.columns = ["date", "outstanding_share"]
@@ -239,7 +240,7 @@ def stock_zh_a_daily(
         temp_df["date"] = pd.to_datetime(temp_df["date"], errors="coerce").dt.date
         return temp_df
     if adjust == "hfq":
-        res = requests.get(zh_sina_a_stock_hfq_url.format(symbol))
+        res = ak_get(zh_sina_a_stock_hfq_url.format(symbol))
         hfq_factor_df = pd.DataFrame(
             eval(res.text.split("=")[1].split("\n")[0])["data"]
         )
@@ -283,7 +284,7 @@ def stock_zh_a_daily(
         return temp_df
 
     if adjust == "qfq":
-        res = requests.get(zh_sina_a_stock_qfq_url.format(symbol))
+        res = ak_get(zh_sina_a_stock_qfq_url.format(symbol))
         qfq_factor_df = pd.DataFrame(
             eval(res.text.split("=")[1].split("\n")[0])["data"]
         )
@@ -344,7 +345,7 @@ def stock_zh_a_cdr_daily(
     :return: specific data
     :rtype: pandas.DataFrame
     """
-    res = requests.get(zh_sina_a_stock_hist_url.format(symbol))
+    res = ak_get(zh_sina_a_stock_hist_url.format(symbol))
     js_code = py_mini_racer.MiniRacer()
     js_code.eval(hk_js_decode)
     dict_list = js_code.call(
@@ -388,7 +389,7 @@ def stock_zh_a_minute(
         "ma": "no",
         "datalen": "1970",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     try:
         data_json = json.loads(data_text.split("=(")[1].split(");")[0])
@@ -401,7 +402,7 @@ def stock_zh_a_minute(
             "ma": "no",
             "datalen": "1970",
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = json.loads(data_text.split("=(")[1].split(");")[0])
         temp_df = pd.DataFrame(data_json).iloc[:, :6]

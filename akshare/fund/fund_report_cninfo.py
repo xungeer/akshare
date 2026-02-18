@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/7/24 23:30
@@ -60,7 +61,7 @@ def fund_report_stock_cninfo(date: str = "20210630") -> pd.DataFrame:
     params = {
         "rdate": "-".join([date[:4], date[4:6], date[6:]]),
     }
-    r = requests.post(url, headers=headers, params=params)
+    r = ak_post(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.rename(
@@ -127,7 +128,7 @@ def fund_report_industry_allocation_cninfo(date: str = "20210630") -> pd.DataFra
     params = {
         "rdate": "-".join([date[:4], date[4:6], date[6:]]),
     }
-    r = requests.post(url, headers=headers, params=params)
+    r = ak_post(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.rename(
@@ -186,7 +187,7 @@ def fund_report_asset_allocation_cninfo() -> pd.DataFrame:
         "Chrome/93.0.4577.63 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.post(url, headers=headers)
+    r = ak_post(url, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.rename(

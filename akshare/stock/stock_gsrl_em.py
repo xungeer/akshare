@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/8/8 21:30
 Desc: 东方财富网-数据中心-股市日历
@@ -31,7 +32,7 @@ def stock_gsrl_gsdt_em(date: str = "20230808") -> pd.DataFrame:
         "reportName": "RPT_ORGOP_ALL",
         "filter": f"""(TRADE_DATE='{"-".join([date[:4], date[4:6], date[6:]])}')""",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.reset_index(inplace=True)

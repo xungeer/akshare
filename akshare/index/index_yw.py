@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/5/3
 Desc: 义乌小商品指数
@@ -30,7 +31,7 @@ def index_yw(symbol: str = "月景气指数") -> pd.DataFrame:
 
     if symbol == "月景气指数":
         url = "https://apiserver.chinagoods.com/yiwuindex/v1/active/industry/class/history/bi?gcCode="
-        r = requests.get(url, verify=False)
+        r = ak_get(url, verify=False)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"])
         temp_df = temp_df[
@@ -55,7 +56,7 @@ def index_yw(symbol: str = "月景气指数") -> pd.DataFrame:
     else:
         symbol_map = {"周价格指数": "piweek", "月价格指数": "month"}
         url = f"https://apiserver.chinagoods.com/yiwuindex/v1/active/industry/class/history/{symbol_map[symbol]}?gcCode="
-        r = requests.get(url, verify=False)
+        r = ak_get(url, verify=False)
         data_json = r.json()
         columns_name = {
             "indextimeno": "期数",

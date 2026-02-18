@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/5/6 20:30
 Desc: 同花顺-数据中心-营业部排名
@@ -24,7 +25,7 @@ def stock_lh_yyb_most() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://data.10jqka.com.cn/ifmarket/lhbyyb/type/1/tab/sbcs/field/sbcs/sort/desc/page/1/"
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     soup = BeautifulSoup(r.text, features="lxml")
     page_str = soup.find(name="span", attrs={"class": "page_info"}).text
     total_page = int(page_str.split("/")[1]) + 1
@@ -32,7 +33,7 @@ def stock_lh_yyb_most() -> pd.DataFrame:
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page), leave=False):
         url = f"https://data.10jqka.com.cn/ifmarket/lhbyyb/type/1/tab/sbcs/field/sbcs/sort/desc/page/{page}/"
-        r = requests.get(url, headers=headers)
+        r = ak_get(url, headers=headers)
         temp_df = pd.read_html(StringIO(r.text))[0]
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True, drop=True)
@@ -47,7 +48,7 @@ def stock_lh_yyb_capital() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://data.10jqka.com.cn/ifmarket/lhbyyb/type/1/tab/zjsl/field/zgczje/sort/desc/page/1/"
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     soup = BeautifulSoup(r.text, features="lxml")
     page_str = soup.find(name="span", attrs={"class": "page_info"}).text
     total_page = int(page_str.split("/")[1]) + 1
@@ -55,7 +56,7 @@ def stock_lh_yyb_capital() -> pd.DataFrame:
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page), leave=False):
         url = f"https://data.10jqka.com.cn/ifmarket/lhbyyb/type/1/tab/zjsl/field/zgczje/sort/desc/page/{page}/"
-        r = requests.get(url, headers=headers)
+        r = ak_get(url, headers=headers)
         temp_df = pd.read_html(StringIO(r.text))[0]
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True, drop=True)
@@ -70,7 +71,7 @@ def stock_lh_yyb_control() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://data.10jqka.com.cn/ifmarket/lhbyyb/type/1/tab/btcz/field/xsjs/sort/desc/page/1/"
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     soup = BeautifulSoup(r.text, features="lxml")
     page_str = soup.find(name="span", attrs={"class": "page_info"}).text
     total_page = int(page_str.split("/")[1]) + 1
@@ -78,7 +79,7 @@ def stock_lh_yyb_control() -> pd.DataFrame:
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page), leave=False):
         url = f"https://data.10jqka.com.cn/ifmarket/lhbyyb/type/1/tab/btcz/field/xsjs/sort/desc/page/{page}/"
-        r = requests.get(url, headers=headers)
+        r = ak_get(url, headers=headers)
         temp_df = pd.read_html(StringIO(r.text))[0]
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df.reset_index(inplace=True, drop=True)

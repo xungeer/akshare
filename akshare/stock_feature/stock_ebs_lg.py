@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/19 15:30
 Desc: 乐咕乐股-股债利差
@@ -22,7 +23,7 @@ def stock_ebs_lg() -> pd.DataFrame:
     url = "https://legulegu.com/api/stockdata/equity-bond-spread"
     token = get_token_lg()
     params = {"token": token, "code": "000300.SH"}
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/equity-bond-spread"),

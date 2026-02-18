@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/4/29 17:00
@@ -23,7 +24,7 @@ def currency_boc_safe() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://www.safe.gov.cn/safe/2020/1218/17833.html"
-    r = requests.get(url)
+    r = ak_get(url)
     r.encoding = "utf8"
     soup = BeautifulSoup(r.text, features="lxml")
     content = soup.find(name="a", string=re.compile("人民币汇率"))["href"]
@@ -43,7 +44,7 @@ def currency_boc_safe() -> pd.DataFrame:
         "endDate": end_date,
         "queryYN": "true",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     current_temp_df = pd.read_html(StringIO(r.text))[-1]
     current_temp_df.sort_values(by=["日期"], inplace=True)
     current_temp_df.reset_index(inplace=True, drop=True)

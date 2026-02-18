@@ -82,3 +82,11 @@ Thumbs.db
 # Documentation
 docs/build/
 docs/_build/
+
+# AI Agents
+.agent/
+
+*.pkl
+
+# tests
+tests/

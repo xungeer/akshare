@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/11/15 18:00
 Desc: 东方财富网-数据中心-期货期权-COMEX库存数据
@@ -38,7 +39,7 @@ def futures_comex_inventory(symbol: str = "黄金") -> pd.DataFrame:
         "client": "WEB",
         "filter": f'(INDICATOR_ID1="{symbol_map[symbol]}")(@STORAGE_TON<>"NULL")',
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
@@ -49,7 +50,7 @@ def futures_comex_inventory(symbol: str = "黄金") -> pd.DataFrame:
                 "pageNumber": page,
             }
         )
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat(objs=[big_df, temp_df], axis=0, ignore_index=True)

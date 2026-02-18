@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/5/20 16:00
 Desc: 互动易-提问与回答
@@ -22,7 +23,7 @@ def _fetch_org_id(symbol: str = "000001") -> str:
     url = "https://irm.cninfo.com.cn/newircs/index/queryKeyboardInfo"
     params = {"_t": "1691144074"}
     data = {"keyWord": symbol}
-    r = requests.post(url, params=params, data=data)
+    r = ak_post(url, params=params, data=data)
     data_json = r.json()
     org_id = data_json["data"][0]["secid"]
     return org_id
@@ -48,7 +49,7 @@ def stock_irm_cninfo(symbol: str = "002594") -> pd.DataFrame:
         "startDay": "",
         "endDay": "",
     }
-    r = requests.post(url, params=params)
+    r = ak_post(url, params=params)
     data_json = r.json()
     total_page = int(data_json["totalPage"])
     total_page = 10 if total_page > 10 else total_page
@@ -56,7 +57,7 @@ def stock_irm_cninfo(symbol: str = "002594") -> pd.DataFrame:
     tqdm = get_tqdm()
     for page in tqdm(range(1, 1 + total_page), leave=False):
         params.update({"pageNum": page})
-        r = requests.post(url, params=params)
+        r = ak_post(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["rows"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
@@ -148,7 +149,7 @@ def stock_irm_ans_cninfo(symbol: str = "1513586704097333248") -> pd.DataFrame:
     """
     url = "https://irm.cninfo.com.cn/newircs/question/getQuestionDetail"
     params = {"questionId": symbol, "_t": "1691146921"}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame.from_dict(data_json["data"], orient="index").T
     if "replyDate" not in temp_df.columns:

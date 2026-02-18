@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/11/20 22:00
@@ -58,7 +59,7 @@ def stock_dividend_cninfo(symbol: str = "600009") -> pd.DataFrame:
         "Chrome/93.0.4577.63 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.post(url, params=params, headers=headers)
+    r = ak_post(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.rename(

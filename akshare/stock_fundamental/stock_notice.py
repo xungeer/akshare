@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/6/13 13:00
@@ -47,7 +48,7 @@ def stock_notice_report(symbol: str = "全部", date: str = "20220511") -> pd.Da
         "begin_time": "-".join([date[:4], date[4:6], date[6:]]),
         "end_time": "-".join([date[:4], date[4:6], date[6:]]),
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = math.ceil(data_json["data"]["total_hits"] / 100)
     big_df = pd.DataFrame()
@@ -58,7 +59,7 @@ def stock_notice_report(symbol: str = "全部", date: str = "20220511") -> pd.Da
                 "page_index": page,
             }
         )
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"]["list"])
 

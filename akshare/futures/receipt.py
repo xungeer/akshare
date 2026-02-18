@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/7/21 15:00
 Desc: 每日注册仓单数据
@@ -56,7 +57,7 @@ def get_dce_receipt(date: str = None, vars_list: List = cons.contract_symbols):
         "tradeDate": date.strftime("%Y%m%d"),
         "varietyId": "all",
     }
-    r = requests.post(url, json=payload)
+    r = ak_post(url, json=payload)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["entityList"])
     records = pd.DataFrame()
@@ -239,7 +240,7 @@ def get_shfe_receipt_3(
         warnings.warn("%s 非交易日" % date.strftime("%Y%m%d"))
         return pd.DataFrame()
     url = f"https://www.shfe.com.cn/data/tradedata/future/stockdata/dailystock_{date}/ZH/all.html"
-    r = requests.get(url, headers=cons.shfe_headers)
+    r = ak_get(url, headers=cons.shfe_headers)
     from io import StringIO
 
     temp_tables = pd.read_html(StringIO(r.text))
@@ -348,7 +349,7 @@ def get_czce_receipt_2(date: str = None, vars_list: List = cons.contract_symbols
         warnings.warn("%s非交易日" % date.strftime("%Y%m%d"))
         return None
     url = cons.CZCE_RECEIPT_URL_2 % (date[:4], date)
-    r = requests.get(url)
+    r = ak_get(url)
     r.encoding = "utf-8"
     data = pd.read_html(r.text)[3:]
     records = pd.DataFrame()
@@ -537,7 +538,7 @@ def get_gfex_receipt(
         "X-Requested-With": "XMLHttpRequest",
         "content-type": "application/x-www-form-urlencoded",
     }
-    r = requests.post(url, data=payload, headers=headers)
+    r = ak_post(url, data=payload, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df = temp_df[temp_df["variety"].str.contains("小计")]

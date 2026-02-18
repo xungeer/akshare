@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/6/15 15:15
 Desc: 东方财富个股人气榜
@@ -25,7 +26,7 @@ def stock_hot_up_em() -> pd.DataFrame:
         "pageNo": 1,
         "pageSize": 100,
     }
-    r = requests.post(url, json=payload)
+    r = ak_post(url, json=payload)
     data_json = r.json()
     temp_rank_df = pd.DataFrame(data_json["data"])
 
@@ -42,7 +43,7 @@ def stock_hot_up_em() -> pd.DataFrame:
         "secids": ",".join(temp_rank_df["mark"]) + ",?v=08926209912590994",
     }
     url = "https://push2.eastmoney.com/api/qt/ulist.np/get"
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["diff"])
     temp_df.columns = ["最新价", "涨跌幅", "代码", "股票名称"]

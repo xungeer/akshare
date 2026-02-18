@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/11 16:30
 Desc: 郑州商品交易所-交易数据-参考数据
@@ -29,7 +30,7 @@ def futures_contract_info_czce(date: str = "20240228") -> pd.DataFrame:
         "Host": "www.czce.com.cn",
     }
     url = f"http://www.czce.com.cn/cn/DFSStaticFiles/Future/{date[:4]}/{date}/FutureDataReferenceData.xml"
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     xml_data = r.text
     # 解析 XML
     tree = ET.ElementTree(ET.fromstring(xml_data))

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/10/21 20:00
 Desc: 同花顺-数据中心-宏观数据-股票筹资
@@ -24,7 +25,7 @@ def macro_stock_finance() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     temp_df = pd.read_html(StringIO(r.text))[0]
     temp_df.rename(
         columns={
@@ -59,7 +60,7 @@ def macro_rmb_loan() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     temp_df = pd.read_html(StringIO(r.text), skiprows=0)[0]
     temp_df.columns = [
         "月份",
@@ -91,7 +92,7 @@ def macro_rmb_deposit() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     temp_df = pd.read_html(StringIO(r.text), skiprows=0)[0]
     temp_df.columns = [
         "月份",

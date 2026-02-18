@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/10/10 17:26
 Desc: 百度股市通- A 股或指数-股评-投票
@@ -37,7 +38,7 @@ def stock_zh_vote_baidu(
     temp_list = []
     for item_period in ["day", "week", "month", "year"]:
         params.update({"select_type": item_period})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_list.append(
             [

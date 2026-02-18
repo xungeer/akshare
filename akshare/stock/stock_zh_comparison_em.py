@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/24 15:00
 Desc: 东方财富-行情中心-同行比较
@@ -33,7 +34,7 @@ def stock_zh_growth_comparison_em(symbol: str = "SZ000895") -> pd.DataFrame:
         "client": "PC",
         "v": "02747607708067783",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
 
     field_mapping = {
@@ -91,7 +92,7 @@ def stock_zh_valuation_comparison_em(symbol: str = "SZ000895") -> pd.DataFrame:
         "source": "HSF10",
         "client": "PC",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     field_mapping_result = {
@@ -182,7 +183,7 @@ def stock_zh_dupont_comparison_em(symbol: str = "SZ000895") -> pd.DataFrame:
         "client": "PC",
         "v": "05086361194054821",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
 
     field_mapping = {
@@ -242,7 +243,7 @@ def stock_zh_scale_comparison_em(symbol: str = "SZ000895") -> pd.DataFrame:
         "client": "PC",
         "v": "005391946600478148",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
 
     field_mapping = {

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/6/23 15:00
 Desc: 东方财富网-行情中心-外汇市场-所有汇率
@@ -97,7 +98,7 @@ def forex_hist_em(symbol: str = "USDCNH") -> pd.DataFrame:
         "ut": "f057cbcbce2a86e2866ab8877db1d059",
         "forcect": 1,
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["klines"]])
     temp_df["code"] = data_json["data"]["code"]

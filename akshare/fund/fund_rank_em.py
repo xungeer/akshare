@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/24 13:00
 Desc: 东方财富网-数据中心-开放基金排行
@@ -74,7 +75,7 @@ def fund_open_fund_rank_em(symbol: str = "全部") -> pd.DataFrame:
         "Chrome/81.0.4044.138 Safari/537.36",
         "Referer": "https://fund.eastmoney.com/fundguzhi.html",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame(data_json["datas"])
@@ -173,7 +174,7 @@ def fund_exchange_rank_em() -> pd.DataFrame:
         "Chrome/81.0.4044.138 Safari/537.36",
         "Referer": "https://fund.eastmoney.com/fundguzhi.html",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     text_data = r.text
     json_data = demjson.decode(text_data[text_data.find("{") : -1])
     temp_df = pd.DataFrame(json_data["datas"])
@@ -265,7 +266,7 @@ def fund_money_rank_em() -> pd.DataFrame:
         "Chrome/81.0.4044.138 Safari/537.36",
         "Referer": "https://fund.eastmoney.com/fundguzhi.html",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     json_data = r.json()
     temp_df = pd.DataFrame(json_data["Data"])
     temp_df.reset_index(inplace=True)
@@ -368,7 +369,7 @@ def fund_lcx_rank_em() -> pd.DataFrame:
         "Chrome/81.0.4044.138 Safari/537.36",
         "Referer": "https://fund.eastmoney.com/fundguzhi.html",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     try:
         data_json = r.json()
     except:  # noqa: E722
@@ -451,7 +452,7 @@ def fund_hk_rank_em() -> pd.DataFrame:
         "Chrome/81.0.4044.138 Safari/537.36",
         "Referer": "https://fund.eastmoney.com/fundguzhi.html",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["Data"])
     temp_df.reset_index(inplace=True)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/9 22:00
 Desc: 东方财富网-行情中心-期货市场-国际期货
@@ -101,7 +102,7 @@ def futures_global_spot_em() -> pd.DataFrame:
         "field": "dm,sc,name,p,zsjd,zde,zdf,f152,o,h,l,zjsj,vol,wp,np,ccl",
         "blockName": "callback",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_num = data_json["total"]
     total_page = math.ceil(total_num / 20) - 1
@@ -109,7 +110,7 @@ def futures_global_spot_em() -> pd.DataFrame:
     big_df = pd.DataFrame()
     for page in tqdm(range(total_page), leave=False):
         params.update({"pageIndex": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["list"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
@@ -191,7 +192,7 @@ def futures_global_hist_em(symbol: str = "HG00Y") -> pd.DataFrame:
         "ut": "f057cbcbce2a86e2866ab8877db1d059",
         "forcect": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["klines"]])
     temp_df["code"] = data_json["data"]["code"]

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2026/2/10 16:00
 Desc: 同花顺理财-基金数据-每日净值-ETF
@@ -40,7 +41,7 @@ def fund_etf_category_ths(symbol: str = "ETF", date: str = "") -> pd.DataFrame:
         f"https://fund.10jqka.com.cn/data/Net/info/"
         f"{inner_symbol}_rate_desc_{inner_date}_0_1_9999_0_0_0_jsonp_g.html"
     )
-    r = requests.get(url, timeout=15)
+    r = ak_get(url, timeout=15)
     data_text = r.text[2:-1]
     data_json = json.loads(data_text)
     temp_df = pd.DataFrame(data_json["data"]["data"]).T

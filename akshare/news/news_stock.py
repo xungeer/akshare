@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/12/23 17:15
 Desc: 个股新闻数据
@@ -63,7 +64,7 @@ def stock_news_em(symbol: str = "603777") -> pd.DataFrame:
         "sec-fetch-site": "same-site",
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_text = r.text
     data_json = json.loads(
         data_text.strip("jQuery35101792940631092459_1764599530165(")[:-1]

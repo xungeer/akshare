@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/9/15 19:00
 Desc: 请求网站内容的函数: 在链接失败后可重复 20 次
@@ -33,11 +34,11 @@ def requests_link(
     while True:
         try:
             if method == "get":
-                r = requests.get(url, timeout=20, headers=headers)
+                r = ak_get(url, timeout=20, headers=headers)
                 r.encoding = encoding
                 return r
             elif method == "post":
-                r = requests.post(url, timeout=20, data=data, headers=headers)
+                r = ak_post(url, timeout=20, data=data, headers=headers)
                 r.encoding = encoding
                 return r
             else:
@@ -70,12 +71,12 @@ def pandas_read_html_link(
     while True:
         try:
             if method == "get":
-                r = requests.get(url, timeout=20, headers=headers)
+                r = ak_get(url, timeout=20, headers=headers)
                 r.encoding = encoding
                 r = pd.read_html(StringIO(r.text), encoding=encoding)
                 return r
             elif method == "post":
-                r = requests.post(url, timeout=20, data=data, headers=headers)
+                r = ak_post(url, timeout=20, data=data, headers=headers)
                 r.encoding = encoding
                 r = pd.read_html(StringIO(r.text), encoding=encoding)
                 return r

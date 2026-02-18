@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/6 18:00
 Desc: openctp 期货交易费用参照表
@@ -22,7 +23,7 @@ def futures_fees_info() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "http://openctp.cn/fees.html"
-    r = requests.get(url)
+    r = ak_get(url)
     r.encoding = "utf-8"
     soup = BeautifulSoup(r.text, features="lxml")
     datetime_str = soup.find("p").string.strip("Generated at ").strip(".")

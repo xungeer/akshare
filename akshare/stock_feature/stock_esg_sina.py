@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/15 16:30
 Desc: 新浪财经-ESG评级中心
@@ -21,7 +22,7 @@ def stock_esg_msci_sina() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://global.finance.sina.com.cn/api/openapi.php/EsgService.getMsciEsgStocks?p=1&num=100"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     page_num = math.ceil(int(data_json["result"]["data"]["total"]) / 100)
     big_df = pd.DataFrame()
@@ -33,7 +34,7 @@ def stock_esg_msci_sina() -> pd.DataFrame:
             "Chrome/123.0.0.0 Safari/537.36",
         }
         url = f"https://global.finance.sina.com.cn/api/openapi.php/EsgService.getMsciEsgStocks?p={page}&num=100"
-        r = requests.get(url, headers=headers)
+        r = ak_get(url, headers=headers)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"]["data"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
@@ -108,7 +109,7 @@ def stock_esg_rft_sina() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://global.finance.sina.com.cn/api/openapi.php/EsgService.getRftEsgStocks?p=1&num=20000"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     big_df = pd.DataFrame(data_json["result"]["data"]["data"])
     big_df.rename(
@@ -172,14 +173,14 @@ def stock_esg_rate_sina() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://global.finance.sina.com.cn/api/openapi.php/EsgService.getEsgStocks?page=1&num=200"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     page_num = math.ceil(int(data_json["result"]["data"]["info"]["total"]) / 200)
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, page_num + 1), leave=False):
         url = f"https://global.finance.sina.com.cn/api/openapi.php/EsgService.getEsgStocks?page={page}&num=200"
-        r = requests.get(url)
+        r = ak_get(url)
         data_json = r.json()
         stock_num = len(data_json["result"]["data"]["info"]["stocks"])
         for num in range(stock_num):
@@ -227,14 +228,14 @@ def stock_esg_zd_sina() -> pd.DataFrame:
     """
     url = "https://global.finance.sina.com.cn/api/openapi.php/EsgService.getZdEsgStocks"
     params = {"p": "1", "num": "100"}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     tqdm = get_tqdm()
     total_page = math.ceil(int(data_json["result"]["data"]["total"]) / 100)
     temp_list = []
     for page in tqdm(range(1, total_page + 1), leave=False):
         params = {"p": str(page), "num": "100"}
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"]["data"])
         temp_list.append(temp_df)
@@ -273,14 +274,14 @@ def stock_esg_hz_sina() -> pd.DataFrame:
     """
     url = "https://global.finance.sina.com.cn/api/openapi.php/EsgService.getHzEsgStocks"
     params = {"p": 1, "num": "100"}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = math.ceil(int(data_json["result"]["data"]["total"]) / 100)
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params = {"p": str(page), "num": "100"}
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"]["data"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)

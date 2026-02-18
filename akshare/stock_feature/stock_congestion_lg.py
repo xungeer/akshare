@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/4/7 15:05
 Desc: 乐咕乐股-大盘拥挤度
@@ -22,7 +23,7 @@ def stock_a_congestion_lg() -> pd.DataFrame:
     url = "https://legulegu.com/api/stockdata/ashares-congestion"
     token = get_token_lg()
     params = {"token": token}
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/ashares-congestion"),

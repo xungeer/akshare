@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/4/5 22:05
 Desc: 乐咕乐股-基金仓位
@@ -27,7 +28,7 @@ def fund_stock_position_lg() -> pd.DataFrame:
         "category": "总仓位",
         "marketId": "5",
     }
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/fund-position/pos-stock"),
@@ -63,7 +64,7 @@ def fund_balance_position_lg() -> pd.DataFrame:
         "category": "总仓位",
         "marketId": "5",
     }
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(
@@ -101,7 +102,7 @@ def fund_linghuo_position_lg() -> pd.DataFrame:
         "category": "总仓位",
         "marketId": "5",
     }
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(

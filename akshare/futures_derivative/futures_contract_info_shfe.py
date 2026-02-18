@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/5/13 17:45
 Desc: 上海期货交易所-交易所服务-业务数据-交易参数汇总查询
@@ -26,7 +27,7 @@ def futures_contract_info_shfe(date: str = "20240513") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/119.0.0.0 Safari/537.36"
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["ContractBaseInfo"])
     temp_df.rename(

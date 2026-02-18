@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/8/25 15:00
 Desc: 东方财富-财经早餐
@@ -37,7 +38,7 @@ def stock_info_cjzc_em() -> pd.DataFrame:
     big_df = pd.DataFrame()
     for page in range(1, 3):
         params.update({"page_index": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"]["list"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
@@ -71,7 +72,7 @@ def stock_info_global_em() -> pd.DataFrame:
         "pageSize": "200",
         "req_trace": "1710315450384",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["fastNewsList"])
     temp_df = temp_df[["title", "summary", "showTime", "code"]]
@@ -108,7 +109,7 @@ def stock_info_global_sina() -> pd.DataFrame:
         "pagesize": "20",
         "type": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     time_list = [
         item["create_time"] for item in data_json["result"]["data"]["feed"]["list"]
@@ -136,7 +137,7 @@ def stock_info_global_futu() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)"
         " Chrome/111.0.0.0 Safari/537.36"
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["data"]["news"])
     temp_df = temp_df[["title", "content", "time", "detailUrl"]]
@@ -169,7 +170,7 @@ def stock_info_global_ths() -> pd.DataFrame:
         "tag": "",
         "track": "website",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["list"])
     temp_df = temp_df[["title", "digest", "rtime", "url"]]

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/4/10 18:24
 Desc: 彭博亿万富豪指数
@@ -21,7 +22,7 @@ def index_bloomberg_billionaires_hist(year: str = "2021") -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = f"https://stats.areppim.com/listes/list_billionairesx{year[-2:]}xwor.htm"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, "lxml")
     trs = soup.findAll("table")[0].findAll("tr")
     heads = trs[1]
@@ -84,7 +85,7 @@ def index_bloomberg_billionaires() -> pd.DataFrame:
         "referer": "https://www.bloomberg.com/",
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36",
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     soup = BeautifulSoup(r.text, "lxml")
     big_content_list = list()
     soup_node = soup.find(attrs={"class": "table-chart"}).find_all(

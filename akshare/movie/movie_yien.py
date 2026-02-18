@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/2/20 14:00
 Desc: 电影票房数据
@@ -89,7 +90,7 @@ def movie_boxoffice_realtime() -> pd.DataFrame:
         "tdate": f"{today[:4]}-{today[4:6]}-{today[6:]}",
         "MethodName": "BoxOffice_GetHourBoxOffice",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table1"])
@@ -126,7 +127,7 @@ def movie_boxoffice_daily(date: str = "20240219") -> pd.DataFrame:
         "edate": f"{last_date[:4]}-{last_date[4:6]}-{last_date[6:]}",
         "MethodName": "BoxOffice_GetDayBoxOffice",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
@@ -179,7 +180,7 @@ def movie_boxoffice_weekly(date: str = "20240218") -> pd.DataFrame:
         "sdate": get_current_week(date=date).strftime("%Y-%m-%d"),
         "MethodName": "BoxOffice_GetWeekInfoData",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
     temp_df.columns = [
@@ -233,7 +234,7 @@ def movie_boxoffice_monthly(date: str = "20240218") -> pd.DataFrame:
         "startTime": f"{date[:4]}-{date[4:6]}-01",
         "MethodName": "BoxOffice_GetMonthBox",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
@@ -281,7 +282,7 @@ def movie_boxoffice_yearly(date: str = "20240218") -> pd.DataFrame:
         "year": f"{date[:4]}",
         "MethodName": "BoxOffice_GetYearInfoData",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
@@ -329,7 +330,7 @@ def movie_boxoffice_yearly_first_week(date: str = "20201018") -> pd.DataFrame:
         "year": f"{date[:4]}",
         "MethodName": "BoxOffice_getYearInfo_fData",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
@@ -382,7 +383,7 @@ def movie_boxoffice_cinema_daily(date: str = "20240219") -> pd.DataFrame:
         "date": date,
         "MethodName": "BoxOffice_GetCinemaDayBoxOffice",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
@@ -427,7 +428,7 @@ def movie_boxoffice_cinema_weekly(date: str = "20240219") -> pd.DataFrame:
         "rowNum2": "100",
         "MethodName": "BoxOffice_GetCinemaWeekBoxOffice",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/12/22 17:00
 Desc: 天天基金-基金档案
@@ -26,7 +27,7 @@ def fund_fee_em(symbol: str = "015641", indicator: str = "认购费率") -> pd.D
     :rtype: pandas.DataFrame
     """
     url = f"https://fundf10.eastmoney.com/jjfl_{symbol}.html"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, features="html.parser")
     tables_dict = {}
     title_elements = soup.find_all(name="h4", class_="t")

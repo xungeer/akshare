@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/12/25 16:46
 Desc: 东方财富网-数据中心-新股申购-过会企业信息
@@ -44,7 +45,7 @@ def stock_ipo_review_em() -> pd.DataFrame:
         return json.loads(json_str)
 
     # 首次请求获取总页数
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     r.raise_for_status()
     data_json = parse_jsonp(r.text)
 
@@ -57,7 +58,7 @@ def stock_ipo_review_em() -> pd.DataFrame:
     tqdm = get_tqdm()
     for page in tqdm(range(1, page_num + 1), leave=False):
         params["pageNumber"] = str(page)
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         r.raise_for_status()
         try:
             data_json = parse_jsonp(r.text)

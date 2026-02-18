@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/5/15 18:20
 Desc: 华尔街见闻-日历-宏观
@@ -51,7 +52,7 @@ def macro_info_ws(date: str = "20240514") -> pd.DataFrame:
     new_datetime = datetime_obj + one_day
     date_str = new_datetime.strftime("%Y-%m-%d %H:%M:%S")
     params = {"start": __format_date(date), "end": __format_date(date_str)}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["items"])
     temp_df["public_date"] = pd.to_datetime(

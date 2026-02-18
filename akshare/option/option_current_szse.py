@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/9/13 16:00
@@ -29,7 +30,7 @@ def option_current_day_szse() -> pd.DataFrame:
         "CATALOGID": "option_drhy",
         "TABKEY": "tab1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     temp_df = pd.read_excel(BytesIO(r.content))
     temp_df["序号"] = pd.to_numeric(temp_df["序号"], errors="coerce")
     temp_df["行权价"] = pd.to_numeric(temp_df["行权价"], errors="coerce")

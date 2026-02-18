@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/5/6 14:30
@@ -21,7 +22,7 @@ def stock_zygc_em(symbol: str = "SH688041") -> pd.DataFrame:
     """
     url = "https://emweb.securities.eastmoney.com/PC_HSF10/BusinessAnalysis/PageAjax"
     params = {"code": symbol}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["zygcfx"])
     temp_df.rename(

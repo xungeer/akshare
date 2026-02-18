@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/1/20 23:04
 Desc: 中国外汇交易中心暨全国银行间同业拆借中心-回购定盘利率-历史数据
@@ -66,7 +67,7 @@ def repo_rate_hist(
         "startDate": start_date,
         "endDate": end_date,
     }
-    r = requests.post(url, params=params, headers=headers)
+    r = ak_post(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df = pd.DataFrame([item for item in temp_df["frValueMap"].to_list()])

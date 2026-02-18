@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/10 18:00
 Desc: 东财财富-日内分时数据
@@ -14,7 +15,7 @@ import requests
 
 def __event_stream(url, params):
     # 使用 stream=True 参数来启用流式请求
-    response = requests.get(url, params=params, stream=True)
+    response = ak_get(url, params=params, stream=True)
     event_data = ""
 
     for line in response.iter_lines():

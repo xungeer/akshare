@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/11/12 15:20
 Desc: 宏观数据-中国
@@ -62,7 +63,7 @@ def __macro_china_base_func(symbol: str, params: dict) -> pd.DataFrame:
     params = params
     big_df = pd.DataFrame()
     while True:
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         if not data_json["data"]["values"]:
             break
@@ -127,7 +128,7 @@ def macro_china_qyspjg() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.rename(
@@ -221,7 +222,7 @@ def macro_china_fdi() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -332,7 +333,7 @@ def macro_china_urban_unemployment() -> pd.DataFrame:
         "k1": "1691326382042",
         "h": "1",
     }
-    r = requests.get(url, params=params, verify=False)
+    r = ak_get(url, params=params, verify=False)
     r.encoding = "utf-8"
     data_json = r.json()
     value_list = [item["data"]["data"] for item in data_json["returndata"]["datanodes"]]
@@ -640,7 +641,7 @@ def macro_china_shibor_all() -> pd.DataFrame:
 
     t = time.time()
     params = {"_": t}
-    res = requests.get(
+    res = ak_get(
         url="https://cdn.jin10.com/data_center/reports/il_1.json", params=params
     )
     json_data = res.json()
@@ -686,7 +687,7 @@ def macro_china_hk_market_info() -> pd.DataFrame:
 
     t = time.time()
     params = {"_": t}
-    res = requests.get(
+    res = ak_get(
         url="https://cdn.jin10.com/data_center/reports/il_2.json", params=params
     )
     json_data = res.json()
@@ -727,7 +728,7 @@ def macro_china_daily_energy() -> pd.DataFrame:
     :return: pandas.DataFrame
     """
     t = time.time()
-    res = requests.get(
+    res = ak_get(
         JS_CHINA_ENERGY_DAILY_URL.format(
             str(int(round(t * 1000))), str(int(round(t * 1000)) + 90)
         )
@@ -759,7 +760,7 @@ def macro_china_rmb() -> pd.DataFrame:
     """
     t = time.time()
     params = {"_": t}
-    res = requests.get(
+    res = ak_get(
         "https://cdn.jin10.com/data_center/reports/exchange_rate.json",
         params=params,
     )
@@ -866,7 +867,7 @@ def macro_china_market_margin_sz() -> pd.DataFrame:
     """
     t = time.time()
     params = {"_": t}
-    res = requests.get(
+    res = ak_get(
         url="https://cdn.jin10.com/data_center/reports/fs_2.json", params=params
     )
     json_data = res.json()
@@ -898,7 +899,7 @@ def macro_china_market_margin_sh() -> pd.DataFrame:
     url = "https://cdn.jin10.com/data_center/reports/fs_1.json"
     t = time.time()
     params = {"_": t}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     json_data = r.json()
     temp_df = pd.DataFrame(json_data["values"]).T
     temp_df.reset_index(inplace=True)
@@ -931,7 +932,7 @@ def macro_china_au_report() -> pd.DataFrame:
     """
     t = time.time()
     params = {"_": t}
-    res = requests.get(
+    res = ak_get(
         url="https://cdn.jin10.com/data_center/reports/sge.json", params=params
     )
     json_data = res.json()
@@ -1006,14 +1007,14 @@ def macro_china_lpr() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
@@ -1058,7 +1059,7 @@ def macro_china_new_house_price(
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -1130,7 +1131,7 @@ def macro_china_enterprise_boom_index() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -1197,7 +1198,7 @@ def macro_china_national_tax_receipts() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -1231,7 +1232,7 @@ def macro_china_bank_financing() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -1277,7 +1278,7 @@ def macro_china_insurance_income() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -1323,7 +1324,7 @@ def macro_china_mobile_number() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.drop_duplicates(inplace=True)
@@ -1370,14 +1371,14 @@ def macro_china_vegetable_basket() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1425,14 +1426,14 @@ def macro_china_agricultural_product() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1480,14 +1481,14 @@ def macro_china_agricultural_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1535,14 +1536,14 @@ def macro_china_energy_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1590,14 +1591,14 @@ def macro_china_commodity_price_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1645,14 +1646,14 @@ def macro_global_sox_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1700,14 +1701,14 @@ def macro_china_yw_electronic_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1758,14 +1759,14 @@ def macro_china_construction_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
@@ -1813,14 +1814,14 @@ def macro_china_construction_price_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1868,14 +1869,14 @@ def macro_china_lpi_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1923,14 +1924,14 @@ def macro_china_bdti_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -1978,14 +1979,14 @@ def macro_china_bsi_index() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -2033,14 +2034,14 @@ def _em_macro_1(em_id) -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -2134,7 +2135,7 @@ def macro_china_new_financial_credit() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -2186,7 +2187,7 @@ def macro_china_fx_gold() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2249,7 +2250,7 @@ def macro_china_stock_market_cap() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2334,7 +2335,7 @@ def macro_china_money_supply() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2418,7 +2419,7 @@ def macro_china_cpi() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2492,7 +2493,7 @@ def macro_china_gdp() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2568,7 +2569,7 @@ def macro_china_ppi() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2613,7 +2614,7 @@ def macro_china_pmi() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -2665,7 +2666,7 @@ def macro_china_gdzctz() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -2716,7 +2717,7 @@ def macro_china_hgjck() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.rename(
@@ -2805,7 +2806,7 @@ def macro_china_czsr() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -2858,7 +2859,7 @@ def macro_china_whxd() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -2908,7 +2909,7 @@ def macro_china_wbck() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -2959,7 +2960,7 @@ def macro_china_xfzxx() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
 
@@ -3042,7 +3043,7 @@ def macro_china_gyzjz() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -3088,7 +3089,7 @@ def macro_china_reserve_requirement_ratio() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -3176,7 +3177,7 @@ def macro_china_consumer_goods_retail() -> pd.DataFrame:
         "pageNo": "1",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -3221,14 +3222,14 @@ def macro_china_society_electricity() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
     big_df = pd.DataFrame(data_json["data"])
     for i in range(1, page_num):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3274,7 +3275,7 @@ def macro_china_society_traffic_volume() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3282,7 +3283,7 @@ def macro_china_society_traffic_volume() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num), leave=False):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"]["非累计"])
@@ -3332,7 +3333,7 @@ def macro_china_postal_telecommunicational() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3340,7 +3341,7 @@ def macro_china_postal_telecommunicational() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num), leave=False):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"]["非累计"])
@@ -3366,7 +3367,7 @@ def macro_china_international_tourism_fx() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3374,7 +3375,7 @@ def macro_china_international_tourism_fx() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num)):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3400,7 +3401,7 @@ def macro_china_passenger_load_factor() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3408,7 +3409,7 @@ def macro_china_passenger_load_factor() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num)):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3434,7 +3435,7 @@ def _macro_china_freight_index() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3442,7 +3443,7 @@ def _macro_china_freight_index() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num)):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3466,7 +3467,7 @@ def macro_china_freight_index() -> pd.DataFrame:
         "num": 5000,
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     columns_list = r.content.decode("gbk").split("\n")[2].split(", ")
     columns_list = [item.strip() for item in columns_list]
     content_list = r.content.decode("gbk").split("\n")[3:]
@@ -3511,7 +3512,7 @@ def macro_china_central_bank_balance() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3519,7 +3520,7 @@ def macro_china_central_bank_balance() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num)):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3545,7 +3546,7 @@ def macro_china_insurance() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3553,7 +3554,7 @@ def macro_china_insurance() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num)):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3579,7 +3580,7 @@ def macro_china_supply_of_money() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3587,7 +3588,7 @@ def macro_china_supply_of_money() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num)):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3613,7 +3614,7 @@ def macro_china_foreign_exchange_gold() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3621,7 +3622,7 @@ def macro_china_foreign_exchange_gold() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num), leave=False):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3648,7 +3649,7 @@ def macro_china_retail_price_index() -> pd.DataFrame:
         "num": "31",
         "condition": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -3])
     page_num = math.ceil(int(data_json["count"]) / 31)
@@ -3656,7 +3657,7 @@ def macro_china_retail_price_index() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(1, page_num), leave=False):
         params.update({"from": i * 31})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("{") : -3])
         temp_df = pd.DataFrame(data_json["data"])
@@ -3693,14 +3694,14 @@ def macro_china_real_estate() -> pd.DataFrame:
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)

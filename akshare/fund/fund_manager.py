@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/14 18:00
 Desc: 基金经理大全
@@ -31,7 +32,7 @@ def fund_manager_em() -> pd.DataFrame:
         "sc": "abbname",
         "st": "asc",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text.strip("var returnjson= "))
     total_page = data_json["pages"]
@@ -42,7 +43,7 @@ def fund_manager_em() -> pd.DataFrame:
                 "pi": page,
             }
         )
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_text = r.text
         data_json = demjson.decode(data_text.strip("var returnjson= "))
         temp_df = pd.DataFrame(data_json["data"])

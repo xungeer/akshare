@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/2/24 18:33
 Desc: 两网及退市
@@ -30,7 +31,7 @@ def stock_staq_net_stop() -> pd.DataFrame:
         "fs": "m:0 s:3",
         "fields": "f12,f14",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["diff"]).T
     temp_df.reset_index(inplace=True)

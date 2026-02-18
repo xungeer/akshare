@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2022/9/20 17:46
@@ -72,7 +73,7 @@ def bond_new_composite_index_cbond(
         "": "",  # noqa: F601
         "locale": "",
     }
-    r = requests.post(url, params=params)
+    r = ak_post(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame.from_dict(
         data_json[f"{indicator_map[indicator]}_{period_map[period]}"],
@@ -149,7 +150,7 @@ def bond_composite_index_cbond(
         "": "",  # noqa: F601
         "locale": "",
     }
-    r = requests.post(url, params=params)
+    r = ak_post(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame.from_dict(
         data_json[f"{indicator_map[indicator]}_{period_map[period]}"],

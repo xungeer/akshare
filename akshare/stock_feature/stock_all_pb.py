@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/4/11 20:40
 Desc: 全部A股-等权重市净率、中位数市净率
@@ -24,7 +25,7 @@ def stock_a_all_pb() -> pd.DataFrame:
         "marketId": "ALL",
         "token": get_token_lg(),
     }
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/all-pb"),

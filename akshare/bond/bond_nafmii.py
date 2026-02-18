@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/3/16 9:00
 Desc:中国银行间市场交易商协会(https://www.nafmii.org.cn/)
@@ -32,7 +33,7 @@ def bond_debt_nafmii(page: str = "1") -> pd.DataFrame:
         "rows": 50,
     }
     payload.update({"page": page})
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     data_json = r.json()  # 数据类型为 json 格式
     temp_df = pd.DataFrame(data_json["rows"])
     temp_df.rename(

@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/3/29 10:30
@@ -25,7 +26,7 @@ def stock_zyjs_ths(symbol: str = "000066") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/109.0.0.0 Safari/537.36"
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     r.encoding = "gb2312"
     soup = BeautifulSoup(r.text, "lxml")
     content_list = [

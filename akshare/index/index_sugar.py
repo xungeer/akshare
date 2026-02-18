@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2023/6/19 17:00
@@ -22,7 +23,7 @@ def index_sugar_msweet() -> pd.DataFrame:
         "struts.portlet.action": "/portlet/price!getSTZSJson.action",
         "moduleId": "cb752447cfe24b44b18c7a7e9abab048",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.concat(
         [pd.DataFrame(data_json["category"]), pd.DataFrame(data_json["data"])], axis=1
@@ -44,7 +45,7 @@ def index_inner_quote_sugar_msweet() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://www.msweet.com.cn/datacenterapply/datacenter/json/JinKongTang.json"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     temp_df = pd.concat(
         [pd.DataFrame(data_json["category"]), pd.DataFrame(data_json["data"])], axis=1
@@ -89,7 +90,7 @@ def index_outer_quote_sugar_msweet() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://www.msweet.com.cn/datacenterapply/datacenter/json/Jkpewlr.json"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     temp_df = pd.concat(
         [pd.DataFrame(data_json["category"]), pd.DataFrame(data_json["data"])], axis=1

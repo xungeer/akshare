@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/16 21:00
 Desc: 天天基金-基金档案
@@ -22,7 +23,7 @@ def fund_overview_em(symbol: str = "015641") -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = f"https://fundf10.eastmoney.com/jbgk_{symbol}.html"
-    r = requests.get(url)
+    r = ak_get(url)
     html_content = pd.read_html(StringIO(r.text))
 
     if len(html_content) == 0:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/7 17:00
 Desc: 新浪财经-行情中心-环球市场
@@ -41,7 +42,7 @@ def index_global_hist_sina(symbol: str = "OMX") -> pd.DataFrame:
         "symbol": index_global_sina_symbol_map[symbol],
         "num": "10000",
     }
-    r = requests.get(url=url, params=params)
+    r = ak_get(url=url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.rename(

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/25 14:30
 Desc: 巨潮资讯-数据中心-新股数据
@@ -55,7 +56,7 @@ def stock_new_gh_cninfo() -> pd.DataFrame:
         "Chrome/93.0.4577.63 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.post(url, headers=headers)
+    r = ak_post(url, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [
@@ -105,7 +106,7 @@ def stock_new_ipo_cninfo() -> pd.DataFrame:
         "timetype": "36",
         "market": "ALL",
     }
-    r = requests.post(url, headers=headers, params=params)
+    r = ak_post(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [

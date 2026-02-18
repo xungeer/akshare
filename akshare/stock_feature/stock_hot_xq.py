@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/1/7 17:00
@@ -54,7 +55,7 @@ def stock_hot_follow_xq(symbol: str = "最热门") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     total_num = data_json["data"]["count"]
     total_page = math.ceil(total_num / 200)
@@ -62,7 +63,7 @@ def stock_hot_follow_xq(symbol: str = "最热门") -> pd.DataFrame:
     big_df = pd.DataFrame()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"page": page})
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         try:
             temp_df = pd.DataFrame(data_json["data"]["list"])
@@ -138,7 +139,7 @@ def stock_hot_tweet_xq(symbol: str = "最热门") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     total_num = data_json["data"]["count"]
     total_page = math.ceil(total_num / 200)
@@ -146,7 +147,7 @@ def stock_hot_tweet_xq(symbol: str = "最热门") -> pd.DataFrame:
     big_df = pd.DataFrame()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"page": page})
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         try:
             temp_df = pd.DataFrame(data_json["data"]["list"])
@@ -222,7 +223,7 @@ def stock_hot_deal_xq(symbol: str = "最热门") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     total_num = data_json["data"]["count"]
     total_page = math.ceil(total_num / 200)
@@ -230,7 +231,7 @@ def stock_hot_deal_xq(symbol: str = "最热门") -> pd.DataFrame:
     big_df = pd.DataFrame()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"page": page})
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         try:
             temp_df = pd.DataFrame(data_json["data"]["list"])

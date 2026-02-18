@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/2/21 11:00
 Desc: 新浪财经-股票-机构持股
@@ -30,7 +31,7 @@ def stock_institute_hold(symbol: str = "20051") -> pd.DataFrame:
         "reportdate": symbol[:-1],
         "quarter": symbol[-1],
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     temp_df = pd.read_html(StringIO(r.text))[0]
     temp_df["证券代码"] = temp_df["证券代码"].astype(str).str.zfill(6)
     del temp_df["明细"]
@@ -73,7 +74,7 @@ def stock_institute_hold_detail(
         "symbol": stock,
         "quarter": quarter,
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     text_data = r.text
     json_data = demjson.decode(text_data[text_data.find("{") : -2])
     big_df = pd.DataFrame()

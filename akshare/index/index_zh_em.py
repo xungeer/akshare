@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/11 17:00
 Desc: 东方财富网-指数行情数据
@@ -84,7 +85,7 @@ def index_zh_a_hist(
             "beg": "0",
             "end": "20500000",
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         if data_json["data"] is None:
             params = {
@@ -97,7 +98,7 @@ def index_zh_a_hist(
                 "beg": "0",
                 "end": "20500000",
             }
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             data_json = r.json()
             if data_json["data"] is None:
                 params = {
@@ -110,7 +111,7 @@ def index_zh_a_hist(
                     "beg": "0",
                     "end": "20500000",
                 }
-                r = requests.get(url, params=params)
+                r = ak_get(url, params=params)
                 data_json = r.json()
                 if data_json["data"] is None:
                     params = {
@@ -123,7 +124,7 @@ def index_zh_a_hist(
                         "beg": "0",
                         "end": "20500000",
                     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     try:
         temp_df = pd.DataFrame(
@@ -141,7 +142,7 @@ def index_zh_a_hist(
             "beg": "0",
             "end": "20500000",
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["klines"]]
@@ -214,7 +215,7 @@ def index_zh_a_hist_min_em(
                 "ndays": "5",
                 "secid": f"1.{symbol}",
             }
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             data_json = r.json()
             if data_json["data"] is None:
                 params = {
@@ -224,7 +225,7 @@ def index_zh_a_hist_min_em(
                     "ndays": "5",
                     "secid": f"0.{symbol}",
                 }
-                r = requests.get(url, params=params)
+                r = ak_get(url, params=params)
                 data_json = r.json()
                 if data_json["data"] is None:
                     params = {
@@ -234,7 +235,7 @@ def index_zh_a_hist_min_em(
                         "ndays": "5",
                         "secid": f"47.{symbol}",
                     }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["trends"]]
@@ -285,7 +286,7 @@ def index_zh_a_hist_min_em(
                 "beg": "0",
                 "end": "20500000",
             }
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             data_json = r.json()
             if data_json["data"] is None:
                 params = {
@@ -298,7 +299,7 @@ def index_zh_a_hist_min_em(
                     "beg": "0",
                     "end": "20500000",
                 }
-                r = requests.get(url, params=params)
+                r = ak_get(url, params=params)
                 data_json = r.json()
                 if data_json["data"] is None:
                     params = {
@@ -311,7 +312,7 @@ def index_zh_a_hist_min_em(
                         "beg": "0",
                         "end": "20500000",
                     }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["klines"]]

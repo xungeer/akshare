@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/6/16 18:19
 Desc: 百度股市通-热搜股票
@@ -48,7 +49,7 @@ def stock_hot_search_baidu(
         "rn": "12",
         "finClientType": "pc",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["Result"]["list"]["body"])
     temp_df.rename(

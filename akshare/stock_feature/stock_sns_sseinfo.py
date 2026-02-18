@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/5/21 19:20
 Desc: 上证e互动-提问与回答
@@ -36,7 +37,7 @@ def _fetch_stock_uid() -> dict:
     tqdm = get_tqdm()
     for page in tqdm(range(1, 73), leave=False):
         data.update({"page": page})
-        r = requests.post(url, data=data)
+        r = ak_post(url, data=data)
         data_json = r.json()
         soup = BeautifulSoup(data_json["content"], features="lxml")
         soup.find_all(name="a", attrs={"rel": "tag"})
@@ -76,12 +77,12 @@ def stock_sns_sseinfo(symbol: str = "603119") -> pd.DataFrame:
     warnings.warn("正在下载中")
     while True:
         params.update({"page": page})
-        r = requests.post(url, params=params)
+        r = ak_post(url, params=params)
         if len(r.text) < 300:
             break
         else:
             page += 1
-        r = requests.post(url, params=params)
+        r = ak_post(url, params=params)
         soup = BeautifulSoup(r.text, features="lxml")
         content_list = [
             item.get_text().strip()

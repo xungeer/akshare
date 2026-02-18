@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/15 22:30
 Desc: 港股股票指数数据-新浪-东财
@@ -41,7 +42,7 @@ def get_hk_index_page_count() -> int:
     :return: 需要抓取的指数的总页数
     :rtype: int
     """
-    res = requests.get(
+    res = ak_get(
         "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getNameCount?node=zs_hk"
     )
     page_count = int(re.findall(re.compile(r"\d+"), res.text)[0]) / 80
@@ -66,7 +67,7 @@ def stock_hk_index_spot_sina() -> pd.DataFrame:
         "hkSSE180GV,hkSSE380,hkSSE50,hkSSECEQT,hkSSECOMP,hkSSEDIV,hkSSEITOP,hkSSEMCAP,hkSSEMEGA,hkVHSI"
     )
     headers = {"Referer": "https://vip.stock.finance.sina.com.cn/"}
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     data_text = r.text
     data_list = [
         item.split('"')[1].split(",")
@@ -129,7 +130,7 @@ def stock_hk_index_daily_sina(symbol: str = "CES100") -> pd.DataFrame:
     """
     url = f"https://finance.sina.com.cn/stock/hkstock/{symbol}/klc_kl.js"
     params = {"d": "2023_5_01"}
-    res = requests.get(url, params=params)
+    res = ak_get(url, params=params)
     js_code = py_mini_racer.MiniRacer()
     js_code.eval(hk_js_decode)
     dict_list = js_code.call(
@@ -261,7 +262,7 @@ def stock_hk_index_daily_em(symbol: str = "HSTECF2L") -> pd.DataFrame:
         "ut": "f057cbcbce2a86e2866ab8877db1d059",
         "forcect": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["klines"]])
     temp_df.columns = [

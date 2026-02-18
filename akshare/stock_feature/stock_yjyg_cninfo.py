@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/6/8 16:34
 Desc: 巨潮资讯-首页-数据-预约披露
@@ -53,7 +54,7 @@ def stock_report_disclosure(
         "pagesize": "10000",
         "pagenum": "1",
     }
-    r = requests.post(url, params=params)
+    r = ak_post(url, params=params)
     text_json = r.json()
     temp_df = pd.DataFrame(text_json["prbookinfos"])
     temp_df.columns = [

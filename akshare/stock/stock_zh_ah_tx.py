@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/2/26 15:10
 Desc: 腾讯财经-A+H股数据, 实时行情数据和历史行情数据(后复权)
@@ -31,7 +32,7 @@ def _get_zh_stock_ah_page_count() -> int:
     """
     hk_payload_copy = hk_payload.copy()
     hk_payload_copy.update({"reqPage": 1})
-    r = requests.get(hk_url, params=hk_payload_copy, headers=hk_headers)
+    r = ak_get(hk_url, params=hk_payload_copy, headers=hk_headers)
     data_json = demjson.decode(r.text[r.text.find("{") : r.text.rfind("}") + 1])
     page_count = data_json["data"]["page_count"]
     return page_count
@@ -49,7 +50,7 @@ def stock_zh_ah_spot() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(0, page_count), leave=False):
         hk_payload.update({"reqPage": i})
-        r = requests.get(hk_url, params=hk_payload, headers=hk_headers)
+        r = ak_get(hk_url, params=hk_payload, headers=hk_headers)
         data_json = demjson.decode(r.text[r.text.find("{") : r.text.rfind("}") + 1])
         big_df = pd.concat(
             objs=[
@@ -119,7 +120,7 @@ def stock_zh_ah_name() -> pd.DataFrame:
     tqdm = get_tqdm()
     for i in tqdm(range(0, page_count), leave=False):
         hk_payload.update({"reqPage": i})
-        r = requests.get(hk_url, params=hk_payload, headers=hk_headers)
+        r = ak_get(hk_url, params=hk_payload, headers=hk_headers)
         data_json = demjson.decode(r.text[r.text.find("{") : r.text.rfind("}") + 1])
         big_df = pd.concat(
             objs=[
@@ -203,13 +204,13 @@ def stock_zh_ah_daily(
                 "Referer": "http://gu.qq.com/hk01033/gp",
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36",
             }
-            r = requests.get(
+            r = ak_get(
                 url="http://web.ifzq.gtimg.cn/appstock/app/kline/kline",
                 params=hk_stock_payload_copy,
                 headers=headers,
             )
         else:
-            r = requests.get(
+            r = ak_get(
                 url="https://web.ifzq.gtimg.cn/appstock/app/hkfqkline/get",
                 params=hk_stock_payload_copy,
                 headers=hk_stock_headers,

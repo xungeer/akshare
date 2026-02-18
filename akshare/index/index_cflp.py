@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2021/12/27 15:47
 Desc: 中国公路物流运价、运量指数
@@ -42,7 +43,7 @@ def index_price_cflp(symbol: str = "周指数") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/90.0.4430.212 Safari/537.36",
     }
-    r = requests.post(url, data=params, headers=headers)
+    r = ak_post(url, data=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(
         [
@@ -91,7 +92,7 @@ def index_volume_cflp(symbol: str = "月指数") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/90.0.4430.212 Safari/537.36",
     }
-    r = requests.post(url, data=params, headers=headers)
+    r = ak_post(url, data=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(
         [

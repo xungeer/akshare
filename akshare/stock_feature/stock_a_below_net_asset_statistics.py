@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/30 10:30
 Desc: 破净股统计历史走势
@@ -32,7 +33,7 @@ def stock_a_below_net_asset_statistics(symbol: str = "全部A股") -> pd.DataFra
         "marketId": symbol_map[symbol],
         "token": "325843825a2745a2a8f9b9e3355cb864",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json)
     temp_df["date"] = pd.to_datetime(temp_df["date"], unit="ms").dt.date

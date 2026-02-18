@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/4/10 18:00
 Desc: 奇货可查网站目前已经商业化运营, 特提供奇货可查-资金数据接口, 方便您程序化调用
@@ -92,7 +93,7 @@ def get_qhkc_fund_bs(
     date = date[:4] + "-" + date[4:6] + "-" + date[6:]
     print(date)
     payload_id = {"date": date}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print("数据获取成功")
     json_data = r.json()
     symbol_name = []
@@ -190,7 +191,7 @@ def get_qhkc_fund_position(
     date = date[:4] + "-" + date[4:6] + "-" + date[6:]
     print(date)
     payload_id = {"date": date}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print(url)
     print("数据获取成功")
     json_data = r.json()
@@ -289,7 +290,7 @@ def get_qhkc_fund_position_change(
     date = date[:4] + "-" + date[4:6] + "-" + date[6:]
     print(date)
     payload_id = {"date": date}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print(url)
     print("数据获取成功")
     json_data = r.json()
@@ -391,7 +392,7 @@ def get_qhkc_fund_money_change(
     date = date[:4] + "-" + date[4:6] + "-" + date[6:]
     print(date)
     payload_id = {"date": date}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print(url)
     print("数据获取成功")
     json_data = r.json()

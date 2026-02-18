@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/7/30 17:00
@@ -40,7 +41,7 @@ def option_lhb_em(
         "client": "WEB",
         "ut": "b2884a393a59ad64002292a3e90d46a5",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     if indicator == "期权交易情况-认沽交易量":

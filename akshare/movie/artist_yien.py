@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2021/11/16 20:40
 Desc: 艺恩-艺人
@@ -77,7 +78,7 @@ def business_value_artist() -> pd.DataFrame:
         "PageSize": "100",
         "MethodName": "Data_GetList_Star",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])
@@ -115,7 +116,7 @@ def online_value_artist() -> pd.DataFrame:
         "PageSize": 100,
         "MethodName": "Data_GetList_Star",
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     r.encoding = "utf8"
     data_json = json.loads(decrypt(r.text))
     temp_df = pd.DataFrame(data_json["Data"]["Table"])

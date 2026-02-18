@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/4/10 16:05
 Desc: 乐咕乐股-股息率-A 股股息率
@@ -30,7 +31,7 @@ def stock_a_gxl_lg(symbol: str = "上证A股") -> pd.DataFrame:
     url = "https://legulegu.com/api/stockdata/guxilv"
     token = get_token_lg()
     params = {"token": token}
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/guxilv"),
@@ -61,7 +62,7 @@ def stock_hk_gxl_lg() -> pd.DataFrame:
     url = "https://legulegu.com/api/stockdata/hs"
     token = get_token_lg()
     params = {"token": token, "indexCode": "HSI"}
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/market/hk/dv/hsi"),

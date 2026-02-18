@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/9/5 15:41
 Desc: 芝加哥商业交易所-比特币成交量报告
@@ -43,7 +44,7 @@ def crypto_bitcoin_cme(date: str = "20230830") -> pd.DataFrame:
         "x-csrf-token": "",
         "x-version": "1.0.0",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(
         [item for item in data_json["data"]["values"]],

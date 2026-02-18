@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/3/21 11:16
 Desc: 行情宝
@@ -19,7 +20,7 @@ def index_hog_spot_price() -> pd.DataFrame:
     """
     url = "https://hqb.nxin.com/pigindex/getPigIndexChart.shtml"
     params = {"regionId": "0"}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.columns = [

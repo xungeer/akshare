@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/2/18 16:00
 Desc: 新浪财经-港股-实时行情数据和历史行情数据(包含前复权和后复权因子)
@@ -40,7 +41,7 @@ def stock_hk_spot() -> pd.DataFrame:
     tqdm = get_tqdm()
     for page in tqdm(range(1, 100), leave=False):
         params["page"] = str(page)
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         if not data_json:
             break
@@ -118,7 +119,7 @@ def stock_hk_daily(symbol: str = "00981", adjust: str = "") -> pd.DataFrame:
     :return: 指定 adjust 的数据
     :rtype: pandas.DataFrame
     """
-    r = requests.get(hk_sina_stock_hist_url.format(symbol))
+    r = ak_get(hk_sina_stock_hist_url.format(symbol))
     js_code = py_mini_racer.MiniRacer()
     js_code.eval(hk_js_decode)
     dict_list = js_code.call(
@@ -135,7 +136,7 @@ def stock_hk_daily(symbol: str = "00981", adjust: str = "") -> pd.DataFrame:
         return data_df
 
     if adjust == "hfq":
-        r = requests.get(hk_sina_stock_hist_hfq_url.format(symbol))
+        r = ak_get(hk_sina_stock_hist_hfq_url.format(symbol))
         try:
             hfq_factor_df = pd.DataFrame(
                 eval(r.text.split("=")[1].split("\n")[0])["data"]
@@ -199,7 +200,7 @@ def stock_hk_daily(symbol: str = "00981", adjust: str = "") -> pd.DataFrame:
         return temp_df
 
     if adjust == "qfq":
-        r = requests.get(hk_sina_stock_hist_qfq_url.format(symbol))
+        r = ak_get(hk_sina_stock_hist_qfq_url.format(symbol))
         try:
             qfq_factor_df = pd.DataFrame(
                 eval(r.text.split("=")[1].split("\n")[0])["data"]
@@ -264,7 +265,7 @@ def stock_hk_daily(symbol: str = "00981", adjust: str = "") -> pd.DataFrame:
         return temp_df
 
     if adjust == "hfq-factor":
-        r = requests.get(hk_sina_stock_hist_hfq_url.format(symbol))
+        r = ak_get(hk_sina_stock_hist_hfq_url.format(symbol))
         hfq_factor_df = pd.DataFrame(eval(r.text.split("=")[1].split("\n")[0])["data"])
         hfq_factor_df.columns = ["date", "hfq_factor", "cash"]
         hfq_factor_df.index = pd.to_datetime(hfq_factor_df.date)
@@ -274,7 +275,7 @@ def stock_hk_daily(symbol: str = "00981", adjust: str = "") -> pd.DataFrame:
         return hfq_factor_df
 
     if adjust == "qfq-factor":
-        r = requests.get(hk_sina_stock_hist_qfq_url.format(symbol))
+        r = ak_get(hk_sina_stock_hist_qfq_url.format(symbol))
         qfq_factor_df = pd.DataFrame(eval(r.text.split("=")[1].split("\n")[0])["data"])
         qfq_factor_df.columns = ["date", "qfq_factor"]
         qfq_factor_df.index = pd.to_datetime(qfq_factor_df.date)

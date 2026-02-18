@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/5 15:00
 Desc: 九期网-商品期权手续费
@@ -20,7 +21,7 @@ def option_comm_symbol() -> pd.DataFrame:
 
     urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     url = "https://www.9qihuo.com/qiquanshouxufei"
-    r = requests.get(url, verify=False)
+    r = ak_get(url, verify=False)
     soup = BeautifulSoup(r.text, features="lxml")
     name = [
         item.string.strip()
@@ -53,7 +54,7 @@ def option_comm_info(symbol: str = "工业硅期权") -> pd.DataFrame:
     ].values[0]
     params = {"heyue": symbol_str}
     url = "https://www.9qihuo.com/qiquanshouxufei"
-    r = requests.get(url, params=params, verify=False)
+    r = ak_get(url, params=params, verify=False)
     temp_df = pd.read_html(StringIO(r.text))[0]
     market_symbol = temp_df.iloc[0, 0]
     columns = temp_df.iloc[2, :]

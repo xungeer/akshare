@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/10/29 15:00
@@ -27,7 +28,7 @@ def futures_index_ccidx(symbol: str = "中证商品期货指数") -> pd.DataFram
     }
     url = "http://www.ccidx.com/CCI-ZZZS/index/getDateLine"
     params = {"indexId": futures_index_map[symbol]}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(
         [json.loads(item) for item in data_json["data"]["dateLineJson"]]

@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/12/1 22:00
@@ -135,7 +136,7 @@ def _baidu_finance_calendar(
 
     # 第一次请求
     params = base_params.copy()
-    response = requests.get(
+    response = ak_get(
         url=url, params=params, headers=headers, impersonate="chrome110"
     )
     response.raise_for_status()
@@ -159,7 +160,7 @@ def _baidu_finance_calendar(
         if page > 0:  # 第一页已在前面获取
             params = base_params.copy()
             params["pn"] = str(page)
-            response = requests.get(url=url, params=params, headers=headers)
+            response = ak_get(url=url, params=params, headers=headers)
             response.raise_for_status()
             data_json = response.json()
 

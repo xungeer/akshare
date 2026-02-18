@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/11 17:40
 Desc: 申万宏源研究-申万指数-指数发布-基金指数-实时行情
@@ -30,7 +31,7 @@ def index_realtime_fund_sw(symbol: str = "基础一级") -> pd.DataFrame:
         "rule": "",
         "indexType": 1,
     }
-    r = requests.post(url, json=payload, headers=headers)
+    r = ak_post(url, json=payload, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["list"])
     temp_df.rename(
@@ -76,7 +77,7 @@ def index_hist_fund_sw(symbol: str = "807200", period: str = "day") -> pd.DataFr
     }
     url = "https://www.swsresearch.com/insWechatSw/fundIndex/getFundKChartData"
     payload = {"swIndexCode": symbol, "type": period_map[period]}
-    r = requests.post(url, json=payload, headers=headers)
+    r = ak_post(url, json=payload, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.rename(

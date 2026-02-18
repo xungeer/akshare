@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/2/1 16:20
 Desc: 东方财富网-数据中心-新股数据-打新收益率
@@ -36,14 +37,14 @@ def stock_dxsyl_em() -> pd.DataFrame:
         "client": "WEB",
         "filter": """((APPLY_DATE>'2010-01-01')(|@APPLY_DATE="NULL"))((LISTING_DATE>'2010-01-01')(|@LISTING_DATE="NULL"))(TRADE_MARKET_CODE!="069001017")""",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["result"]["pages"]
     big_df = pd.DataFrame()
     tqdm = get_tqdm()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pageNumber": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -154,14 +155,14 @@ def stock_xgsglb_em(symbol: str = "全部股票") -> pd.DataFrame:
             "source": "NEEQSELECT",
             "client": "WEB",
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         total_page = data_json["result"]["pages"]
         big_df = pd.DataFrame()
         tqdm = get_tqdm()
         for page in tqdm(range(1, 1 + int(total_page)), leave=False):
             params.update({"pageNumber": page})
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             data_json = r.json()
             temp_df = pd.DataFrame(data_json["result"]["data"])
             big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -290,14 +291,14 @@ def stock_xgsglb_em(symbol: str = "全部股票") -> pd.DataFrame:
             "source": "WEB",
             "client": "WEB",
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         total_page = data_json["result"]["pages"]
         big_df = pd.DataFrame()
         tqdm = get_tqdm()
         for page in tqdm(range(1, total_page + 1), leave=False):
             params.update({"pageNumber": page})
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             data_json = r.json()
             temp_df = pd.DataFrame(data_json["result"]["data"])
             big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)

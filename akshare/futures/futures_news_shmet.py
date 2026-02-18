@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/12/26 18:00
@@ -42,7 +43,7 @@ def futures_news_shmet(symbol: str = "全部") -> pd.DataFrame:
             "content": "",
             "flashTag": symbol_map[symbol],
         }
-    r = requests.post(url, json=payload)
+    r = ak_post(url, json=payload)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["dataList"])
     temp_df.columns = [

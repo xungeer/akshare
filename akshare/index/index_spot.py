@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/12/26 18:30
 Desc: 商品现货价格指数
@@ -26,7 +27,7 @@ def spot_goods(symbol: str = "波罗的海干散货指数") -> pd.DataFrame:
         "澳大利亚粉矿价格": "PB",
     }
     params = {"symbol": symbol_url_dict[symbol], "table": "0"}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     r.encoding = "gbk"
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"]["data"])

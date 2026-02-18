@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/24 15:00
 Desc: 东方财富-港股-行业对比
@@ -36,7 +37,7 @@ def stock_hk_growth_comparison_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "03313416193688571",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     field_mapping = {
         "CORRE_SECURITY_CODE": "代码",
@@ -85,7 +86,7 @@ def stock_hk_valuation_comparison_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "03445297742754925",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     field_mapping = {
         "CORRE_SECURITY_CODE": "代码",
@@ -142,7 +143,7 @@ def stock_hk_scale_comparison_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "07839693368708753",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     field_mapping = {
         "CORRE_SECURITY_CODE": "代码",

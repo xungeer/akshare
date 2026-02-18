@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2026/1/9 22:12
 Desc: 百度股市通-外汇-行情榜单
@@ -34,7 +35,7 @@ def fx_quote_baidu(symbol: str = "人民币") -> pd.DataFrame:
                 "rn": "20",
                 "finClientType": "pc",
             }
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             data_json = r.json()
             temp_df = pd.DataFrame(data_json["Result"])
             temp_list = []

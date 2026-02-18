@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/7 17:00
 Desc: 东方财富网-行情中心-全球指数
@@ -39,7 +40,7 @@ def index_global_spot_em() -> pd.DataFrame:
         "dect": "1",
         "wbp2u": "|0|0|0|web",
     }
-    r = requests.get(url=url, params=params)
+    r = ak_get(url=url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["diff"]).T
     temp_df.reset_index(inplace=True)
@@ -114,7 +115,7 @@ def index_global_hist_em(symbol: str = "美元指数") -> pd.DataFrame:
         "ut": "f057cbcbce2a86e2866ab8877db1d059",
         "forcect": "1",
     }
-    r = requests.get(url=url, params=params)
+    r = ak_get(url=url, params=params)
     data_json = r.json()
 
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["klines"]])

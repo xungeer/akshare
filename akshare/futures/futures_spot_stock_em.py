@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/3/21 12:00
 Desc: 东方财富网-数据中心-现货与股票
@@ -45,7 +46,7 @@ def futures_spot_stock(symbol: str = "能源") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
         "(KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36",
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     data_text = r.text
     temp_json = demjson.decode(
         data_text[

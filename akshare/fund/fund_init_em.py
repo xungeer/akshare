@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/11/7 18:30
 Desc: 基金数据-新发基金-新成立基金
@@ -28,7 +29,7 @@ def fund_new_found_em() -> pd.DataFrame:
         "isbuy": "1",
         "v": "0.4069919776543214",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text.strip("var newfunddata="))
     temp_df = pd.DataFrame(data_json["datas"])

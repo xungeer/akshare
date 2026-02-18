@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/11 13:00
 Desc: 东方财富-港股-公司概况
@@ -35,7 +36,7 @@ def stock_hk_security_profile_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "04748497219912483",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     field_mapping = {
@@ -101,7 +102,7 @@ def stock_hk_company_profile_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "04748497219912483",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     field_mapping = {
@@ -178,7 +179,7 @@ def stock_hk_financial_indicator_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "07945646099062258",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     field_mapping = {
@@ -258,7 +259,7 @@ def stock_hk_dividend_payout_em(symbol: str = "03900") -> pd.DataFrame:
         "client": "PC",
         "v": "035584639294227527",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
 
     field_mapping = {

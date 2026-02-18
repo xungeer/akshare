@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/31 18:00
 Desc: 国泰君安期货-交易日历数据表
@@ -26,7 +27,7 @@ def futures_rule(date: str = "20231205") -> pd.DataFrame:
     urllib3.disable_warnings()
     url = " https://www.gtjaqh.com/pc/calendar"
     params = {"date": f"{date}"}
-    r = requests.get(url, params=params, verify=False)
+    r = ak_get(url, params=params, verify=False)
     big_df = pd.read_html(StringIO(r.text), header=1)[0]
     big_df["交易保证金比例"] = big_df["交易保证金比例"].str.strip("%")
     big_df["交易保证金比例"] = pd.to_numeric(big_df["交易保证金比例"], errors="coerce")

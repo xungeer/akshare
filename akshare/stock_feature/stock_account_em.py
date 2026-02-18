@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/21 17:00
 Desc: 东方财富网-数据中心-特色数据-股票账户统计
@@ -32,7 +33,7 @@ def stock_account_statistics_em() -> pd.DataFrame:
         "pageNum": "1",
         "pageNumber": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [

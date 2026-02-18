@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/24 18:10
 Desc: 上海期货交易所指定交割仓库库存周报
@@ -33,7 +34,7 @@ def futures_stock_shfe_js(date: str = "20240419") -> pd.DataFrame:
         "date": "-".join([date[:4], date[4:6], date[6:]]),
         "attr_id": "1",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     columns_list = [item["name"] for item in data_json["data"]["keys"]]
     temp_df = pd.DataFrame(data_json["data"]["values"], columns=columns_list)

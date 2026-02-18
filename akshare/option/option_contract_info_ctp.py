@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/10/30 17:40
 Desc: openctp-合约信息接口
@@ -18,7 +19,7 @@ def option_contract_info_ctp() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "http://dict.openctp.cn/instruments?types=option"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
 

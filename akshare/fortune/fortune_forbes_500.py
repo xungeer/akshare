@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/1/26 15:10
 Desc: 福布斯中国-榜单
@@ -22,7 +23,7 @@ def forbes_rank(symbol: str = "2021福布斯中国创投人100") -> pd.DataFrame
     :rtype: pandas.DataFrame
     """
     url = "https://www.forbeschina.com/lists"
-    r = requests.get(url, verify=False)
+    r = ak_get(url, verify=False)
     soup = BeautifulSoup(r.text, "lxml")
     need_list = [
         item.find_all("a") for item in soup.find_all("div", attrs={"class": "col-sm-4"})
@@ -36,7 +37,7 @@ def forbes_rank(symbol: str = "2021福布斯中国创投人100") -> pd.DataFrame
             ["https://www.forbeschina.com" + item["href"] for item in all_list],
         )
     )
-    r = requests.get(name_url_dict[symbol], verify=False)
+    r = ak_get(name_url_dict[symbol], verify=False)
     temp_df = pd.read_html(r.text)[0]
     return temp_df
 

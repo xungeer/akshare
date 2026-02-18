@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2026/2/4 17:00
 Desc: 新浪财经-债券-中国/美国国债收益率
@@ -31,7 +32,7 @@ def bond_gb_zh_sina(symbol: str = "中国10年期国债") -> pd.DataFrame:
         "中国30年期国债": "CN30YT",
     }
     url = f"https://bond.finance.sina.com.cn/hq/gb/daily?symbol={symbol_map[symbol]}"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [
@@ -76,7 +77,7 @@ def bond_gb_us_sina(symbol: str = "美国10年期国债") -> pd.DataFrame:
         "美国30年期国债": "US30YT",
     }
     url = f"https://bond.finance.sina.com.cn/hq/gb/daily?symbol={symbol_map[symbol]}"
-    r = requests.get(url)
+    r = ak_get(url)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.columns = [

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/6/7 20:00
 Desc: 天天基金网-基金档案-投资组合
@@ -35,7 +36,7 @@ def fund_portfolio_hold_em(symbol: str = "000001", date: str = "2024") -> pd.Dat
         "month": "",
         "rt": "0.913877030254846",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     soup = BeautifulSoup(data_json["content"], features="lxml")
@@ -123,7 +124,7 @@ def fund_portfolio_bond_hold_em(
         "year": date,
         "rt": "0.913877030254846",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     soup = BeautifulSoup(data_json["content"], features="lxml")
@@ -189,7 +190,7 @@ def fund_portfolio_industry_allocation_em(
         "year": date,
         "callback": "jQuery183006997159478989867_1648016188499",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_list = []
@@ -258,7 +259,7 @@ def fund_portfolio_change_em(
         "year": date,
         "rt": "0.913877030254846",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     soup = BeautifulSoup(data_json["content"], features="lxml")

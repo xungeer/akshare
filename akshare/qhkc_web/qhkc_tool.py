@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2019/9/30 13:58
 Desc: 奇货可查网站目前已经商业化运营, 特提供奇货可查-工具数据接口, 方便您程序化调用
@@ -43,7 +44,7 @@ def qhkc_tool_foreign(url: AnyStr = QHKC_TOOL_FOREIGN_URL):
      美棉花  10/07 23:30      61.69        61.05 -1.037
     """
     payload_id = {"page": 1, "limit": 10}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print("数据获取成功")
     json_data = r.json()
     name = []
@@ -89,7 +90,7 @@ def qhkc_tool_nebula(url: AnyStr = QHKC_TOOL_FOREIGN_URL):
      美棉花  10/07 23:30      61.69        61.05 -1.037
     """
     payload_id = {"page": 1, "limit": 10}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print("数据获取成功")
     json_data = r.json()
     name = []

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/10 18:00
 Desc: 东方财富网-行情首页-沪深京 A 股
@@ -989,7 +990,7 @@ def stock_zh_a_hist(
         "beg": start_date,
         "end": end_date,
     }
-    r = requests.get(url, params=params, timeout=timeout)
+    r = ak_get(url, params=params, timeout=timeout)
     data_json = r.json()
     if not (data_json["data"] and data_json["data"]["klines"]):
         return pd.DataFrame()
@@ -1078,7 +1079,7 @@ def stock_zh_a_hist_min_em(
             "iscr": "0",
             "secid": f"{market_code}.{symbol}",
         }
-        r = requests.get(url, timeout=15, params=params)
+        r = ak_get(url, timeout=15, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["trends"]]
@@ -1117,7 +1118,7 @@ def stock_zh_a_hist_min_em(
             "beg": "0",
             "end": "20500000",
         }
-        r = requests.get(url, timeout=15, params=params)
+        r = ak_get(url, timeout=15, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["klines"]]
@@ -1194,7 +1195,7 @@ def stock_zh_a_hist_pre_min_em(
         "iscca": "0",
         "secid": f"{market_code}.{symbol}",
     }
-    r = requests.get(url, timeout=15, params=params)
+    r = ak_get(url, timeout=15, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["trends"]])
     temp_df.columns = [
@@ -1427,7 +1428,7 @@ def stock_hk_hist(
         "end": "20500000",
         "lmt": "1000000",
     }
-    r = requests.get(url, timeout=15, params=params)
+    r = ak_get(url, timeout=15, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]["klines"]])
     if temp_df.empty:
@@ -1501,7 +1502,7 @@ def stock_hk_hist_min_em(
             "ndays": "5",
             "secid": f"116.{symbol}",
         }
-        r = requests.get(url, timeout=15, params=params)
+        r = ak_get(url, timeout=15, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["trends"]]
@@ -1540,7 +1541,7 @@ def stock_hk_hist_min_em(
             "beg": "0",
             "end": "20500000",
         }
-        r = requests.get(url, timeout=15, params=params)
+        r = ak_get(url, timeout=15, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(
             [item.split(",") for item in data_json["data"]["klines"]]
@@ -1720,7 +1721,7 @@ def stock_us_hist(
         "end": "20500000",
         "lmt": "1000000",
     }
-    r = requests.get(url, timeout=15, params=params)
+    r = ak_get(url, timeout=15, params=params)
     data_json = r.json()
     if not data_json["data"]["klines"]:
         return pd.DataFrame()
@@ -1780,7 +1781,7 @@ def stock_us_hist_min_em(
         "ndays": "5",
         "secid": f"{symbol.split('.')[0]}.{symbol.split('.')[1]}",
     }
-    r = requests.get(url, params=params, timeout=15)
+    r = ak_get(url, params=params, timeout=15)
     data_json = r.json()
     if not data_json["data"]["trends"]:
         return pd.DataFrame()

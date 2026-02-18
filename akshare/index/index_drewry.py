@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/9/26 18:00
 Desc: Drewry 集装箱指数
@@ -35,7 +36,7 @@ def drewry_wci_index(symbol: str = "composite") -> pd.DataFrame:
         "rotterdam-new york": 7,
     }
     url = "https://infogram.com/world-container-index-1h17493095xl4zj"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, features="lxml")
     data_text = soup.find_all("script")[-4].string.strip("window.infographicData=")[:-1]
     data_json = demjson.decode(data_text)

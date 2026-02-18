@@ -1,5 +1,6 @@
 # !/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/5/16 19:00
 Desc: 雪球-个股-公司概况-公司简介
@@ -35,7 +36,7 @@ def stock_individual_basic_info_xq(
         "symbol": symbol,
     }
     headers.update({"cookie": f"xq_a_token={xq_a_token};"})
-    r = requests.get(url, params=params, headers=headers, timeout=timeout)
+    r = ak_get(url, params=params, headers=headers, timeout=timeout)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.reset_index(inplace=True)
@@ -66,7 +67,7 @@ def stock_individual_basic_info_us_xq(
         "symbol": symbol,
     }
     headers.update({"cookie": f"xq_a_token={xq_a_token};"})
-    r = requests.get(url, params=params, headers=headers, timeout=timeout)
+    r = ak_get(url, params=params, headers=headers, timeout=timeout)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.reset_index(inplace=True)
@@ -97,7 +98,7 @@ def stock_individual_basic_info_hk_xq(
         "symbol": symbol,
     }
     headers.update({"cookie": f"xq_a_token={xq_a_token};"})
-    r = requests.get(url, params=params, headers=headers, timeout=timeout)
+    r = ak_get(url, params=params, headers=headers, timeout=timeout)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.reset_index(inplace=True)

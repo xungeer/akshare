@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/10/27 22:08
 Desc: 腾讯-股票-实时行情-成交明细
@@ -34,7 +35,7 @@ def stock_zh_a_tick_tx_js(symbol: str = "sz000001") -> pd.DataFrame:
                 "c": symbol,
                 "p": page,
             }
-            r = requests.get(url, params=params)
+            r = ak_get(url, params=params)
             text_data = r.text
             temp_df = (
                 pd.DataFrame(eval(text_data[text_data.find("[") :])[1].split("|"))

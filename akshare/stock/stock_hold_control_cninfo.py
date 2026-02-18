@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/24 23:30
 Desc: 巨潮资讯-数据中心-专题统计-股东股本-实际控制人持股变动
@@ -72,7 +73,7 @@ def stock_hold_control_cninfo(symbol: str = "全部") -> pd.DataFrame:
     params = {
         "ctype": symbol_map[symbol],
     }
-    r = requests.get(url, headers=headers, params=params)
+    r = ak_get(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [
@@ -143,7 +144,7 @@ def stock_hold_management_detail_cninfo(symbol: str = "增持") -> pd.DataFrame:
         "edate": current_date,
         "varytype": symbol_map[symbol],
     }
-    r = requests.post(url, headers=headers, params=params)
+    r = ak_post(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [
@@ -236,7 +237,7 @@ def stock_hold_change_cninfo(symbol: str = "全部") -> pd.DataFrame:
     params = {
         "market": symbol_map[symbol],
     }
-    r = requests.get(url, headers=headers, params=params)
+    r = ak_get(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [

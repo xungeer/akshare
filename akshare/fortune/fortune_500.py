@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/8/4 17:22
 Desc: 历年世界 500 强榜单数据
@@ -26,7 +27,7 @@ def _fortune_rank_year_url_map() -> dict:
     :rtype: dict
     """
     url = "https://www.fortunechina.com/fortune500/index.htm"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, features="lxml")
     url_2023 = "https://www.fortunechina.com/fortune500/c/2023-08/02/content_436874.htm"
     node_list = soup.find_all(name="div", attrs={"class": "swiper-slide"})
@@ -46,7 +47,7 @@ def fortune_rank(year: str = "2015") -> pd.DataFrame:
     """
     year_url_map = _fortune_rank_year_url_map()
     url = year_url_map[year]
-    r = requests.get(url)
+    r = ak_get(url)
     r.encoding = "utf-8"
     if int(year) < 2007:
         df = pd.read_html(StringIO(r.text))[0].iloc[1:-1,]
@@ -57,7 +58,7 @@ def fortune_rank(year: str = "2015") -> pd.DataFrame:
         df.columns = pd.read_html(StringIO(r.text))[0].iloc[0, :].tolist()
         for page in tqdm(range(2, 11), leave=False):
             # page =2
-            r = requests.get(url.rsplit(".", maxsplit=1)[0] + "_" + str(page) + ".htm")
+            r = ak_get(url.rsplit(".", maxsplit=1)[0] + "_" + str(page) + ".htm")
             r.encoding = "utf-8"
             temp_df = pd.read_html(StringIO(r.text))[0].iloc[1:,]
             temp_df.columns = pd.read_html(StringIO(r.text))[0].iloc[0, :].tolist()

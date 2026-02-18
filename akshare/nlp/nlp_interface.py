@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/6 14:02
 Desc: ownthink-knowledge graph
@@ -26,7 +27,7 @@ def nlp_ownthink(word: str = "人工智能", indicator: str = "entity") -> pd.Da
     payload = {
         "entity": word,
     }
-    r = requests.post(url, data=payload)
+    r = ak_post(url, data=payload)
     if not r.json()["data"]:
         print("Can not find the resource, please type into the correct word")
         return pd.DataFrame()
@@ -51,7 +52,7 @@ def nlp_answer(question: str = "人工智能") -> str:
     """
     url = "https://api.ownthink.com/bot"
     params = {"spoken": question}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     json_data = r.json()
     answer = json_data["data"]["info"]["text"]
     return answer

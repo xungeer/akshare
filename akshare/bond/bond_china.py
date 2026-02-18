@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/10/1 17:00
 Desc: 中国外汇交易中心暨全国银行间同业拆借中心
@@ -30,7 +31,7 @@ def bond_spot_quote() -> pd.DataFrame:
         "flag": "1",
         "lang": "cn",
     }
-    r = requests.post(url=url, data=payload, headers=headers)
+    r = ak_post(url=url, data=payload, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [
@@ -94,7 +95,7 @@ def bond_spot_deal() -> pd.DataFrame:
         "lang": "cn",
         "bondName": "",
     }
-    r = requests.post(url=url, data=payload, headers=headers)
+    r = ak_post(url=url, data=payload, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [
@@ -162,7 +163,7 @@ def bond_china_yield(
         "qxId": "ycqx",
         "locale": "cn_ZH",
     }
-    res = requests.get(url, params=params, headers=headers)
+    res = ak_get(url, params=params, headers=headers)
     data_text = res.text.replace("&nbsp", "")
     data_df = pd.read_html(StringIO(data_text), header=0)[1]
     data_df["日期"] = pd.to_datetime(data_df["日期"], errors="coerce").dt.date

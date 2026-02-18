@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/11/27 13:30
 Desc: 美股目标价 or 港股目标价
@@ -42,7 +43,7 @@ def stock_price_js(symbol: str = "us") -> pd.DataFrame:
         "x-app-id": "BNsiR9uq7yfW0LVz",
         "x-version": "1.0.0",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     json_data = r.json()
     temp_df = pd.DataFrame(json_data["data"]["list"])
     temp_df.columns = [

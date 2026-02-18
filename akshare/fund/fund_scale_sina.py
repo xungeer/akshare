@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/9/1 16:20
@@ -41,7 +42,7 @@ def fund_scale_open_sina(symbol: str = "股票型基金") -> pd.DataFrame:
         "type2": fund_map[symbol],
         "type3": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("({") + 1 : -2])
     temp_df = pd.DataFrame(data_json["data"])
@@ -112,7 +113,7 @@ def fund_scale_close_sina() -> pd.DataFrame:
         "type2": "",
         "type3": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("({") + 1 : -2])
     temp_df = pd.DataFrame(data_json["data"])
@@ -183,7 +184,7 @@ def fund_scale_structured_sina() -> pd.DataFrame:
         "type2": "",
         "type3": "",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("({") + 1 : -2])
     temp_df = pd.DataFrame(data_json["data"])

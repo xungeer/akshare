@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2026/1/12 15:00
 Desc: 国证指数
@@ -26,7 +27,7 @@ def index_all_cni() -> pd.DataFrame:
         "rows": "2000",
         "pageNum": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["rows"])
     temp_df.columns = [
@@ -101,7 +102,7 @@ def index_hist_cni(
         "endDate": end_date,
         "frequency": "day",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["data"])
     temp_df.columns = [
@@ -158,7 +159,7 @@ def index_detail_cni(symbol: str = "399001") -> pd.DataFrame:
     warnings.simplefilter(action="ignore", category=UserWarning)
     url = "https://www.cnindex.com.cn/sample-detail/download-history"
     params = {"indexcode": symbol}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     temp_df = pd.read_excel(BytesIO(r.content))
     temp_df["样本代码"] = temp_df["样本代码"].astype(str).str.zfill(6)
     temp_df.columns = [
@@ -185,7 +186,7 @@ def index_detail_hist_cni(symbol: str = "399001") -> pd.DataFrame:
     """
     url = "https://www.cnindex.com.cn/sample-detail/download-history"
     params = {"indexcode": symbol}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     temp_df = pd.read_excel(BytesIO(r.content))
     temp_df["样本代码"] = temp_df["样本代码"].astype(str).str.zfill(6)
     temp_df.columns = [
@@ -212,7 +213,7 @@ def index_detail_hist_adjust_cni(symbol: str = "399005") -> pd.DataFrame:
     """
     url = "http://www.cnindex.com.cn/sample-detail/download-adjustment"
     params = {"indexcode": symbol}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     try:
         import warnings
 

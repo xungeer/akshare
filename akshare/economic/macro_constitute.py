@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/3 16:08
 Desc: 金十数据-数据中心-主要机构-宏观经济
@@ -38,7 +39,7 @@ def macro_cons_gold() -> pd.DataFrame:
     }
     big_df = pd.DataFrame()
     while True:
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         if not data_json["data"]["values"]:
             break
@@ -103,7 +104,7 @@ def macro_cons_silver() -> pd.DataFrame:
     }
     big_df = pd.DataFrame()
     while True:
-        r = requests.get(url, params=params, headers=headers)
+        r = ak_get(url, params=params, headers=headers)
         data_json = r.json()
         if not data_json["data"]["values"]:
             break
@@ -172,7 +173,7 @@ def macro_cons_opec_month() -> pd.DataFrame:
         "x-csrf-token": "",
         "x-version": "1.0.0",
     }
-    res = requests.get(
+    res = ak_get(
         url=f"https://datacenter-api.jin10.com/reports/dates?category=opec&_={str(int(round(t * 1000)))}",
         headers=headers,
     )  # 日期序列
@@ -180,7 +181,7 @@ def macro_cons_opec_month() -> pd.DataFrame:
     bar = tqdm(reversed(all_date_list))
     for item in bar:
         bar.set_description(f"Please wait for a moment, now downloading {item}'s data")
-        res = requests.get(
+        res = ak_get(
             url=f"https://datacenter-api.jin10.com/reports/list?"
             f"category=opec&date={item}&_={str(int(round(t * 1000)))}",
             headers=headers,

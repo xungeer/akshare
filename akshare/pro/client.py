@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2019/11/10 22:52
 Desc: 数据接口源代码
@@ -42,7 +43,7 @@ class DataApi:
             "X-Token": self.__token,
         }
         url = parse.urljoin(self.__http_url, "/".join([api_name, *kwargs.values()]))
-        res = requests.get(url, headers=headers, timeout=self.__timeout)
+        res = ak_get(url, headers=headers, timeout=self.__timeout)
         if res.status_code != 200:
             raise Exception("连接异常, 请检查您的Token是否过期和输入的参数是否正确")
         data_json = res.json()

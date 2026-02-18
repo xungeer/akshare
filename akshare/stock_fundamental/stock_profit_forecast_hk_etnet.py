@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/1/7 15:00
 Desc: 东方财富网-数据中心-研究报告-盈利预测
@@ -29,7 +30,7 @@ def stock_hk_profit_forecast_et(
     params = {
         "code": str(int(symbol)),
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     if indicator == "评级总览":
         temp_df = pd.read_html(StringIO(r.text))[0]
         inner_list = [item for item in temp_df.iloc[0, 0].split(" ") if item != ""]

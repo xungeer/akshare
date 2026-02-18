@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2025/3/19 15:30
@@ -296,7 +297,7 @@ def stock_zh_a_new() -> pd.DataFrame:
     """
     url = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeStockCount"
     params = {"node": "new_stock"}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     total_page = math.ceil(int(r.json()) / 80)
     url = "https://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData"
     big_df = pd.DataFrame()
@@ -310,7 +311,7 @@ def stock_zh_a_new() -> pd.DataFrame:
             "symbol": "",
             "_s_r_a": "page",
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         r.encoding = "gb2312"
         data_json = r.json()
         temp_df = pd.DataFrame(data_json)

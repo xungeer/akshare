@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/7/24 23:30
 Desc: 巨潮资讯-数据中心-专题统计-股东股本-股东人数及持股集中度
@@ -60,7 +61,7 @@ def stock_hold_num_cninfo(date: str = "20210630") -> pd.DataFrame:
     params = {
         "rdate": date,
     }
-    r = requests.post(url, headers=headers, params=params)
+    r = ak_post(url, headers=headers, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["records"])
     temp_df.columns = [

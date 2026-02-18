@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/20 17:40
 Desc: 东方财富网站-天天基金网-基金档案-基金公告
@@ -34,7 +35,7 @@ def fund_announcement_dividend_em(symbol: str = "000001") -> pd.DataFrame:
         "type": "2",
         "_": round(time.time() * 1000),
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["Data"])
     temp_df.columns = [
@@ -75,7 +76,7 @@ def fund_announcement_report_em(symbol: str = "000001") -> pd.DataFrame:
         "type": "3",
         "_": round(time.time() * 1000),
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["Data"])
     temp_df.columns = [
@@ -115,7 +116,7 @@ def fund_announcement_personnel_em(symbol: str = "000001") -> pd.DataFrame:
         "type": "4",
         "_": round(time.time() * 1000),
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["Data"])
     temp_df.columns = [

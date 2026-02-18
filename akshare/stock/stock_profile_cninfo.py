@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/10/14 22:00
 Desc: 巨潮资讯-个股-公司概况
@@ -59,7 +60,7 @@ def stock_profile_cninfo(symbol: str = "600030") -> pd.DataFrame:
         "Referer": "https://webapi.cninfo.com.cn/",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.post(url, params=params, headers=headers)
+    r = ak_post(url, params=params, headers=headers)
     data_json = r.json()
     columns = [
         "公司名称",

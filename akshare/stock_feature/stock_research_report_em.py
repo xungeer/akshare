@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/2/28 13:00
 Desc: 东方财富网-数据中心-研究报告-个股研报
@@ -41,7 +42,7 @@ def stock_research_report_em(symbol: str = "000001") -> pd.DataFrame:
         "pageNum": "1",
         "pageNumber": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["TotalPage"]
     current_year = data_json["currentYear"]
@@ -56,7 +57,7 @@ def stock_research_report_em(symbol: str = "000001") -> pd.DataFrame:
                 "pageNumber": page,
             }
         )
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"])
         big_df = pd.concat(objs=[big_df, temp_df], axis=0, ignore_index=True)

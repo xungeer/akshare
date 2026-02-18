@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/4/10 18:00
 Desc: 奇货可查网站目前已经商业化运营, 特提供奇货可查-指数数据接口, 方便您程序化调用
@@ -43,13 +44,13 @@ def get_qhkc_index(name: AnyStr = "奇货商品", url: AnyStr = QHKC_INDEX_URL):
     """
     name_id_dict = {}
     qhkc_index_url = "https://qhkch.com/ajax/official_indexes.php"
-    r = requests.post(qhkc_index_url)
+    r = ak_post(qhkc_index_url)
     display_name = [item["name"] for item in r.json()["data"]]
     index_id = [item["id"] for item in r.json()["data"]]
     for item in range(len(display_name)):
         name_id_dict[display_name[item]] = index_id[item]
     payload_id = {"id": name_id_dict[name]}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print(name, "数据获取成功")
     json_data = r.json()
     date = json_data["data"]["date"]
@@ -122,13 +123,13 @@ def get_qhkc_index_trend(name: AnyStr = "奇货商品", url: AnyStr = QHKC_INDEX
     """
     name_id_dict = {}
     qhkc_index_url = "https://qhkch.com/ajax/official_indexes.php"
-    r = requests.post(qhkc_index_url)
+    r = ak_post(qhkc_index_url)
     display_name = [item["name"] for item in r.json()["data"]]
     index_id = [item["id"] for item in r.json()["data"]]
     for item in range(len(display_name)):
         name_id_dict[display_name[item]] = index_id[item]
     payload_id = {"page": 1, "limit": 10, "index": name_id_dict[name], "date": ""}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print(f"{name}期货指数-大资金动向数据获取成功")
     json_data = r.json()
     df_temp = pd.DataFrame()
@@ -180,13 +181,13 @@ def get_qhkc_index_profit_loss(
     """
     name_id_dict = {}
     qhkc_index_url = "https://qhkch.com/ajax/official_indexes.php"
-    r = requests.post(qhkc_index_url)
+    r = ak_post(qhkc_index_url)
     display_name = [item["name"] for item in r.json()["data"]]
     index_id = [item["id"] for item in r.json()["data"]]
     for item in range(len(display_name)):
         name_id_dict[display_name[item]] = index_id[item]
     payload_id = {"index": name_id_dict[name], "date1": start_date, "date2": end_date}
-    r = requests.post(url, data=payload_id)
+    r = ak_post(url, data=payload_id)
     print(f"{name}期货指数-盈亏分布数据获取成功")
     json_data = r.json()
     indexes = json_data["data"]["indexes"]

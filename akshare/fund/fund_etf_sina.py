@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/11/10 15:30
 Desc: 新浪财经-基金行情
@@ -40,7 +41,7 @@ def fund_etf_category_sina(symbol: str = "LOF基金") -> pd.DataFrame:
         "node": fund_map[symbol],
         "[object HTMLDivElement]": "qvvne",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("([") + 1 : -2])
     temp_df = pd.DataFrame(data_json)
@@ -125,7 +126,7 @@ def fund_etf_hist_sina(symbol: str = "sh510050") -> pd.DataFrame:
     url = (
         f"https://finance.sina.com.cn/realstock/company/{symbol}/hisdata_klc2/klc_kl.js"
     )
-    r = requests.get(url)
+    r = ak_get(url)
     js_code = py_mini_racer.MiniRacer()
     js_code.eval(hk_js_decode)
     dict_list = js_code.call(
@@ -160,7 +161,7 @@ def fund_etf_dividend_sina(symbol: str = "sh510050") -> pd.DataFrame:
     """
     # 构建复权数据URL
     factor_url = f"https://finance.sina.com.cn/realstock/company/{symbol}/hfq.js"
-    r = requests.get(factor_url)
+    r = ak_get(factor_url)
     text = r.text
     if text.startswith("var"):
         json_str = text.split("=")[1].strip().rsplit("}", maxsplit=1)[0].strip()

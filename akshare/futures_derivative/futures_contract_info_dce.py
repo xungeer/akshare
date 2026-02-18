@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/8/18 11:00
 Desc: 大连商品交易所-业务/服务-业务参数-交易参数-合约信息查询
@@ -23,7 +24,7 @@ def futures_contract_info_dce() -> pd.DataFrame:
         "tradeType": "1",
         "varietyId": "all",
     }
-    r = requests.post(url, json=payload)
+    r = ak_post(url, json=payload)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"])
     temp_df.rename(

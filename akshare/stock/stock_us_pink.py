@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/6/17 14:00
 Desc: 东方财富网-行情中心-美股市场-粉单市场
@@ -34,7 +35,7 @@ def stock_us_pink_spot_em() -> pd.DataFrame:
         "dect": "1",
         "ut": "bd1d9ddb04089700cf9c27f6f7426281",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     import math
 
@@ -43,7 +44,7 @@ def stock_us_pink_spot_em() -> pd.DataFrame:
     big_df = pd.DataFrame()
     for page in tqdm(range(1, total_page + 1), leave=False):
         params.update({"pn": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"]["diff"])
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)

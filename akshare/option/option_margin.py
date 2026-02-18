@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/6/16 18:00
 Desc: 唯爱期货-期权保证金
@@ -22,7 +23,7 @@ def option_margin_symbol() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://www.iweiai.com/qiquan/yuanyou"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.content, features="lxml")
     symbol_text = [
         item.get_text() for item in soup.find_all("a") if "qiquan" in item["href"]
@@ -47,7 +48,7 @@ def option_margin(symbol: str = "原油期权") -> pd.DataFrame:
     url = option_margin_symbol_df[option_margin_symbol_df["symbol"] == symbol][
         "url"
     ].values[0]
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.content, features="lxml")
     updated_time = soup.find_all("small")[0].get_text().strip("最近更新：")
     temp_df = pd.read_html(StringIO(r.text))[0]

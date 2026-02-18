@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/17 19:00
 Desc: 数库-A股新闻情绪指数
@@ -19,7 +20,7 @@ def index_news_sentiment_scope() -> pd.DataFrame:
     """
     url = "https://www.chinascope.com/inews/senti/index"
     params = {"period": "YEAR"}
-    r = requests.get(url=url, params=params)
+    r = ak_get(url=url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json)
     temp_df.rename(

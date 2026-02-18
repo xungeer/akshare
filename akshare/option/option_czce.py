@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/10/17 16:30
 Desc: 郑州商品交易所-交易数据-历史行情下载-期权历史行情下载
@@ -72,7 +73,7 @@ def option_hist_yearly_czce(symbol: str = "SR", year: str = "2021") -> pd.DataFr
         warnings.warn(f"{year} year, symbol {symbol} is not on trade")
         return pd.DataFrame()
     url = f"http://www.czce.com.cn/cn/DFSStaticFiles/Option/{year}/OptionDataAllHistory/{symbol}OPTIONS{year}.txt"
-    r = requests.get(url)
+    r = ak_get(url)
     option_df = pd.read_table(StringIO(r.text), skiprows=1, sep="|", low_memory=False)
     return option_df
 

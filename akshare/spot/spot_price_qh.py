@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/5/16 20:00
@@ -21,7 +22,7 @@ def __get_item_of_spot_price_qh() -> pd.DataFrame:
     :rtype: str
     """
     url = "https://www.99qh.com/data/spotTrend"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, features="lxml")
     data_text = soup.find(name="script", attrs={"id": "__NEXT_DATA__"}).text
     data_json = json.loads(data_text)
@@ -47,7 +48,7 @@ def __get_token_of_spot_price_qh() -> str:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36",
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     token = r.headers["_pcc"]
     return token
 
@@ -103,7 +104,7 @@ def spot_price_qh(symbol: str = "螺纹钢") -> pd.DataFrame:
         "endDate": "2050-01-01",
         "appCategory": "web",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = ak_get(url, params=params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["list"])
     temp_df.rename(

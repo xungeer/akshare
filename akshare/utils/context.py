@@ -5,6 +5,7 @@ class AkshareConfig:
         if cls._instance is None:
             cls._instance = super().__new__(cls)
             cls._instance.proxies = None
+            cls._instance.cookies = None
         return cls._instance
 
     @classmethod
@@ -14,6 +15,14 @@ class AkshareConfig:
     @classmethod
     def get_proxies(cls):
         return cls().proxies
+
+    @classmethod
+    def set_cookies(cls, cookies):
+        cls().cookies = cookies
+
+    @classmethod
+    def get_cookies(cls):
+        return cls().cookies
 
 
 config = AkshareConfig()
@@ -26,6 +35,14 @@ def set_proxies(proxies):
 
 def get_proxies():
     return config.get_proxies()
+
+
+def set_cookies(cookies):
+    config.set_cookies(cookies)
+
+
+def get_cookies():
+    return config.get_cookies()
 
 
 class ProxyContext:

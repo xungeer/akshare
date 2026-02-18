@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 # !/usr/bin/env python
 """
 Date: 2024/8/14 11:30
@@ -22,7 +23,7 @@ def bond_zh_cov_info_ths() -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/89.0.4389.90 Safari/537.36",
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["list"])
     temp_df.rename(

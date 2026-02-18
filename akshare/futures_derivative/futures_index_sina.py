@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/3/1 23:00
 Desc: 新浪财经-期货的主力合约数据
@@ -28,7 +29,7 @@ def zh_subscribe_exchange_symbol(symbol: str = "dce") -> pd.DataFrame:
     :return: 订阅指定交易所品种的代码
     :rtype: pandas.DataFrame
     """
-    r = requests.get(zh_subscribe_exchange_symbol_url)
+    r = ak_get(zh_subscribe_exchange_symbol_url)
     r.encoding = "gb2312"
     data_text = r.text
     data_json = demjson.decode(
@@ -64,7 +65,7 @@ def match_main_contract(symbol: str = "shfe") -> pd.DataFrame:
     exchange_symbol_list = zh_subscribe_exchange_symbol(symbol).iloc[:, 1].tolist()
     for item in exchange_symbol_list:
         zh_match_main_contract_payload.update({"node": item})
-        res = requests.get(
+        res = ak_get(
             zh_match_main_contract_url, params=zh_match_main_contract_payload
         )
         data_json = demjson.decode(res.text)
@@ -120,7 +121,7 @@ def futures_main_sina(
     trade_date = "20210817"
     trade_date = trade_date[:4] + "_" + trade_date[4:6] + "_" + trade_date[6:]
     url = f"https://stock2.finance.sina.com.cn/futures/api/jsonp.php/var%20_{symbol}{trade_date}=/InnerFuturesNewService.getDailyKLine?symbol={symbol}&_={trade_date}"
-    r = requests.get(url)
+    r = ak_get(url)
     data_text = r.text
     data_json = data_text[data_text.find("([") + 1 : data_text.rfind("])") + 1]
     temp_df = pd.read_json(StringIO(data_json))

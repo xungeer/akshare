@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/1/20 22:30
 Desc: FF-data-library
@@ -21,7 +22,7 @@ def article_ff_crr() -> pd.DataFrame:
     :return: FF多因子模型单一表格
     :rtype: pandas.DataFrame
     """
-    res = requests.get(ff_home_url)
+    res = ak_get(ff_home_url)
     # first table
     list_index = (
         pd.read_html(StringIO(res.text), header=0, index_col=0)[4]

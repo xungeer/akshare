@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/8/31 23:00
 Desc: 金十数据-比特币持仓报告
@@ -22,7 +23,7 @@ def crypto_bitcoin_hold_report():
         "X-App-Id": "lnFP5lxse24wPgtY",
         "X-Version": "1.0.0",
     }
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["values"])
     temp_df.columns = [

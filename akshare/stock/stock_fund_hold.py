@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2021/12/19 13:09
 Desc: 东方财富网-数据中心-主力数据-基金持仓
@@ -44,7 +45,7 @@ def stock_report_fund_hold(
         "p": "1",
         "pageNo": "1",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     total_page = data_json["pages"]
     big_df = pd.DataFrame()
@@ -60,7 +61,7 @@ def stock_report_fund_hold(
             "p": page,
             "pageNo": page,
         }
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"])
         big_df = pd.concat([big_df, temp_df], ignore_index=True)
@@ -134,7 +135,7 @@ def stock_report_fund_hold_detail(
         "source": "WEB",
         "client": "WEB",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["result"]["data"])
     temp_df.reset_index(inplace=True)

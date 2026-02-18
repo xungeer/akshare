@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/1 15:00
 Desc: 同花顺-盈利预测
@@ -28,7 +29,7 @@ def stock_profit_forecast_ths(
     :rtype: pandas.DataFrame
     """
     url = f"https://basic.10jqka.com.cn/new/{symbol}/worth.html"
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     r.encoding = "gbk"
     if "本年度暂无机构做出业绩预测" in r.text:
         # 处理 `本年度暂无机构做出业绩预测` 的情况

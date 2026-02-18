@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/5 18:00
 Desc: 外盘期货-历史行情数据-日频率
@@ -36,7 +37,7 @@ def futures_foreign_hist(symbol: str = "ZSD") -> pd.DataFrame:
         "_": today,
         "source": "web",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_df = pd.read_json(StringIO(data_text[data_text.find("[") : -2]))
     return data_df
@@ -51,7 +52,7 @@ def futures_foreign_detail(symbol: str = "ZSD") -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = f"https://finance.sina.com.cn/futures/quotes/{symbol}.shtml"
-    r = requests.get(url)
+    r = ak_get(url)
     r.encoding = "gbk"
     data_text = r.text
     data_df = pd.read_html(StringIO(data_text))[6]

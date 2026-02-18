@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/9/10 15:32
 Desc: 乐咕乐股-创新高、新低的股票数量
@@ -22,7 +23,7 @@ def stock_a_high_low_statistics(symbol: str = "all") -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = f"https://www.legulegu.com/stockdata/member-ship/get-high-low-statistics/{symbol}"
-    r = requests.get(url, headers=headers)
+    r = ak_get(url, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json)
     del temp_df["indexCode"]

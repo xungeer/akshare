@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/9/20 18:05
 Desc: 乐估乐股-底部研究-巴菲特指标
@@ -22,7 +23,7 @@ def stock_buffett_index_lg() -> pd.DataFrame:
     token = get_token_lg()
     url = "https://legulegu.com/api/stockdata/marketcap-gdp/get-marketcap-gdp"
     params = {"token": token}
-    r = requests.get(
+    r = ak_get(
         url,
         params=params,
         **get_cookie_csrf(url="https://legulegu.com/stockdata/marketcap-gdp"),

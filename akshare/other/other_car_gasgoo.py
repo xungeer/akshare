@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/4/3 19:00
 Desc: 汽车行业制造企业数据库
@@ -66,7 +67,7 @@ def car_sale_rank_gasgoo(symbol: str = "车企榜", date: str = "202109") -> pd.
         "Chrome/95.0.4638.69 Safari/537.36",
         "X-Requested-With": "XMLHttpRequest",
     }
-    r = requests.post(url, json=payload, headers=headers)
+    r = ak_post(url, json=payload, headers=headers)
     data_json = r.json()
     data_json = demjson.decode(data_json["d"])
     temp_df = pd.DataFrame(data_json)

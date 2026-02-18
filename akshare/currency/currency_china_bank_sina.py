@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/12/8 17:20
 Desc: 新浪财经-中行人民币牌价历史数据查询
@@ -36,7 +37,7 @@ def _currency_boc_sina_map(
         "money_code": "EUR",
         "type": "0",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     r.encoding = "gbk"
     soup = BeautifulSoup(r.text, "lxml")
     data_dict = dict(
@@ -79,7 +80,7 @@ def currency_boc_sina(
         "page": "1",
         "call_type": "ajax",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     soup = BeautifulSoup(r.text, features="lxml")
     soup.find(attrs={"id": "money_code"})
     page_element_list = soup.find_all("a", attrs={"class": "page"})
@@ -87,7 +88,7 @@ def currency_boc_sina(
     big_df = pd.DataFrame()
     for page in tqdm(range(1, page_num + 1), leave=False):
         params.update({"page": page})
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         temp_df = pd.read_html(StringIO(r.text), header=0)[0]
         big_df = pd.concat(objs=[big_df, temp_df], ignore_index=True)
     big_df.columns = [

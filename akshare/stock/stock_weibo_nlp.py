@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/3/5 17:00
 Desc: 金十数据中心-实时监控-微博舆情报告
@@ -42,7 +43,7 @@ def stock_js_weibo_nlp_time() -> Dict:
         "accept-language": "zh-CN,zh;q=0.9,en;q=0.8",
     }
 
-    r = requests.get(url, headers=headers, data=payload)
+    r = ak_get(url, headers=headers, data=payload)
     return r.json()["data"]["timescale"]
 
 
@@ -74,7 +75,7 @@ def stock_js_weibo_report(time_period: str = "CNHOUR12") -> pd.DataFrame:
         "accept-language": "zh-CN,zh;q=0.9,en;q=0.8",
     }
 
-    r = requests.get(url, params=payload, headers=headers)
+    r = ak_get(url, params=payload, headers=headers)
     temp_df = pd.DataFrame(r.json()["data"])
     temp_df["rate"] = pd.to_numeric(temp_df["rate"])
     return temp_df

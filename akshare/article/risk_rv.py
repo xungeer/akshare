@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2024/1/20 20:51
 Desc: 修大成主页-Risk Lab-Realized Volatility; Oxford-Man Institute of Quantitative Finance Realized Library
@@ -62,7 +63,7 @@ def article_oman_rv(symbol: str = "FTSE", index: str = "rk_th2") -> pd.DataFrame
     | .STOXX50E | EURO STOXX 50                             | January 03, 2000   | November 28, 2019 |
     """
     url = "https://realized.oxford-man.ox.ac.uk/theme/js/visualization-data.js?20191111113154"
-    res = requests.get(url)
+    res = ak_get(url)
     soup = BeautifulSoup(res.text, "lxml")
     soup_text = soup.find("p").get_text()
     data_json = json.loads(soup_text[soup_text.find("{") : soup_text.rfind("};") + 1])
@@ -102,7 +103,7 @@ def article_oman_rv_short(symbol: str = "FTSE") -> pd.DataFrame:
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36",
     }
 
-    res = requests.get(url, headers=headers, verify=False)
+    res = ak_get(url, headers=headers, verify=False)
     soup = BeautifulSoup(res.text, "lxml")
     soup_text = soup.find("p").get_text()
     data_json = json.loads(soup_text[soup_text.find("{") : soup_text.rfind("}") + 1])
@@ -154,7 +155,7 @@ def article_rlab_rv(symbol: str = "39693") -> pd.DataFrame:
     print("由于服务器在国外, 请稍后, 如果访问失败, 请使用代理工具")
     url = "https://dachxiu.chicagobooth.edu/data.php"
     payload = {"ticker": symbol}
-    res = requests.get(url, params=payload, verify=False)
+    res = ak_get(url, params=payload, verify=False)
     soup = BeautifulSoup(res.text, "lxml")
     title_fore = (
         pd.DataFrame(soup.find("p").get_text().split(symbol)).iloc[0, 0].strip()

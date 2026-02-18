@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2023/12/22 20:00
 Desc: 胡润排行榜
@@ -25,7 +26,7 @@ def hurun_rank(indicator: str = "胡润百富榜", year: str = "2023") -> pd.Dat
     :rtype: pandas.DataFrame
     """
     url = "https://www.hurun.net/zh-CN/Rank/HsRankDetails?pagetype=rich"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, "lxml")
     url_list = []
     for item in soup.find_all("ul", attrs={"class": "dropdown-menu"}):
@@ -37,7 +38,7 @@ def hurun_rank(indicator: str = "胡润百富榜", year: str = "2023") -> pd.Dat
             name_list.append(inner_item.text.strip())
 
     name_url_map = dict(zip(name_list, url_list))
-    r = requests.get(name_url_map[indicator])
+    r = ak_get(name_url_map[indicator])
     soup = BeautifulSoup(r.text, "lxml")
     code_list = [
         item["value"].split("=")[2]
@@ -72,7 +73,7 @@ def hurun_rank(indicator: str = "胡润百富榜", year: str = "2023") -> pd.Dat
                     }
                 )
                 url = "https://www.hurun.net/zh-CN/Rank/HsRankDetailsList"
-                r = requests.get(url, params=params)
+                r = ak_get(url, params=params)
                 data_json = r.json()
                 temp_df = pd.DataFrame(data_json["rows"])
                 offset = offset + 20
@@ -102,7 +103,7 @@ def hurun_rank(indicator: str = "胡润百富榜", year: str = "2023") -> pd.Dat
         ]
         return big_df
     url = "https://www.hurun.net/zh-CN/Rank/HsRankDetailsList"
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["rows"])
     if indicator == "胡润百富榜":

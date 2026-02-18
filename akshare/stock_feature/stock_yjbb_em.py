@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/3/20 18:00
 Desc: 东方财富-数据中心-年报季报
@@ -35,7 +36,7 @@ def stock_yjbb_em(date: str = "20200331") -> pd.DataFrame:
         "columns": "ALL",
         "filter": f"(REPORTDATE='{'-'.join([date[:4], date[4:6], date[6:]])}')",
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     page_num = data_json["result"]["pages"]
     big_df = pd.DataFrame()
@@ -47,7 +48,7 @@ def stock_yjbb_em(date: str = "20200331") -> pd.DataFrame:
                 "pageNumber": page,
             }
         )
-        r = requests.get(url, params=params)
+        r = ak_get(url, params=params)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["result"]["data"])
         big_list.append(temp_df)

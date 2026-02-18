@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/10/15 22:30
 Desc: 腾讯证券-行情首页-沪深京A股
@@ -56,7 +57,7 @@ def stock_zh_a_hist_tx(
             "param": f"{symbol},day,{year}-01-01,{year + 1}-12-31,640,{adjust}",
             "r": "0.8205512681390605",
         }
-        r = requests.get(url, params=params, timeout=timeout)
+        r = ak_get(url, params=params, timeout=timeout)
         data_text = r.text
         data_json = demjson.decode(data_text[data_text.find("={") + 1 :])["data"][
             symbol

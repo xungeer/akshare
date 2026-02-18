@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/11/25 18:00
 Desc: 99 期货网-大宗商品库存数据
@@ -24,7 +25,7 @@ def __get_99_symbol_map() -> pd.DataFrame:
     :rtype: pandas.DataFrame
     """
     url = "https://www.99qh.com/data/stockIn"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, features="lxml")
     raw_data = soup.find(attrs={"id": "__NEXT_DATA__"}).text
     data_json = json.loads(raw_data)
@@ -79,7 +80,7 @@ def futures_inventory_99(symbol: str = "豆一") -> pd.DataFrame:
         "endDate": f"{datetime.now().date().isoformat()}",
         "appCategory": "web",
     }
-    r = requests.get(url, params, headers=headers)
+    r = ak_get(url, params, headers=headers)
     data_json = r.json()
     temp_df = pd.DataFrame(data_json["data"]["list"])
     temp_df.columns = ["日期", "收盘价", "库存"]

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2022/1/23 10:21
 Desc: 新浪财经-商品期权
@@ -23,7 +24,7 @@ def option_commodity_contract_sina(symbol: str = "玉米期权") -> pd.DataFrame
     :rtype: dict
     """
     url = "https://stock.finance.sina.com.cn/futures/view/optionsDP.php/pg_o/dce"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, "lxml")
     url_list = [
         item.find("a")["href"]
@@ -37,7 +38,7 @@ def option_commodity_contract_sina(symbol: str = "玉米期权") -> pd.DataFrame
     ]
     comm_list_dict = {key: value for key, value in zip(commodity_list, url_list)}
     url = "https://stock.finance.sina.com.cn" + comm_list_dict[symbol]
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, "lxml")
     symbol = (
         soup.find(attrs={"id": "option_symbol"}).find(attrs={"class": "selected"}).text
@@ -66,7 +67,7 @@ def option_commodity_contract_table_sina(
     :rtype: pandas.DataFrame
     """
     url = "https://stock.finance.sina.com.cn/futures/view/optionsDP.php/pg_o/dce"
-    r = requests.get(url)
+    r = ak_get(url)
     soup = BeautifulSoup(r.text, "lxml")
     url_list = [
         item.find("a")["href"]
@@ -86,7 +87,7 @@ def option_commodity_contract_table_sina(
         "exchange": comm_list_dict[symbol].split("/")[-1],
         "pinzhong": contract,
     }
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_json = r.json()
     up_df = pd.DataFrame(data_json["result"]["data"]["up"])
     down_df = pd.DataFrame(data_json["result"]["data"]["down"])
@@ -147,7 +148,7 @@ def option_commodity_hist_sina(symbol: str = "au2012C392") -> pd.DataFrame:
     """
     url = "https://stock.finance.sina.com.cn/futures/api/jsonp.php/var%20_m2009C30002020_7_17=/FutureOptionAllService.getOptionDayline"
     params = {"symbol": symbol}
-    r = requests.get(url, params=params)
+    r = ak_get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("[") : -2])
     temp_df = pd.DataFrame(data_json)

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+from akshare.request import ak_get, ak_post
 """
 Date: 2025/8/4 14:00
 Desc: 中证指数网站-指数列表
@@ -45,7 +46,7 @@ def index_csindex_all() -> pd.DataFrame:
             "undefined": None,
         },
     }
-    r = requests.post(url, json=playloads, headers=headers)
+    r = ak_post(url, json=playloads, headers=headers)
 
     temp_df = pd.read_excel(BytesIO(r.content))
     temp_df["基日"] = pd.to_datetime(
